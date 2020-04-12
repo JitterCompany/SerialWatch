@@ -1,0 +1,4 @@
+<div class="terminal" (scroll)="scrolled($event)" #scrollframe>
+  <pre>Test</pre>
+  <pre *ngFor="let l of lines" class="line" #line>{{l}}</pre>
+</div>

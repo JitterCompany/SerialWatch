@@ -2,9 +2,12 @@
 
   <sw-toolbar></sw-toolbar>
 
-  <h1 class="title">
-    Hi! {{ 'PAGES.HOME.TITLE' | translate }}
-  </h1>
+  <div class="terminal-wrapper">
+    <sw-terminal [lines]="lines" ></sw-terminal>
+  </div>
 
+  <sw-command-bar></sw-command-bar>
+
+  <!-- <div style="height: 50px; background-color: blue; flex: 0 0 50px;"> Balk </div> -->
 </div>
 

@@ -1,9 +1,13 @@
+@import 'variables';
+
+:host {
+  display: flex;
+  flex-flow: column;
+}
+
 .container {
   height: 100%;
-  // display: flex;
-  // flex-flow: column;
-  // align-items: center;
-  // justify-content: center;
+  height: 100vh; /* establish fixed height */
 
   // background: url(../../assets/background.jpg) no-repeat center fixed;
   -webkit-background-size: cover; /* pour anciens Chrome et Safari */
@@ -16,4 +20,14 @@
   }
 
   color: black;
+
+  display: flex;
+  flex-flow: column nowrap;
+  flex-grow: 1;
+}
+
+.terminal-wrapper {
+  // TODO: why is a fixed height required?
+  height: calc(100vh - #{$footer-height} - #{$header-height});
+  flex: 1;
 }

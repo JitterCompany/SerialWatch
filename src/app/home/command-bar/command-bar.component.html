@@ -1,0 +1,7 @@
+<p-toolbar>
+  <form class="ui-inputgroup" [formGroup]="cmdForm" (submit)="sendCMD()">
+    <span class="ui-inputgroup-addon">CMD</span>
+    <input pInpuText formControlName="cmd" type="text" placeholder="Command" style="width:100%">
+    <button [disabled]="!cmdForm.valid" class="ui-button-success" pButton type="submit" label="SEND"></button>
+  </form>
+</p-toolbar>

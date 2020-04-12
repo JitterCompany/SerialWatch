@@ -16,13 +16,18 @@ import {DialogModule} from 'primeng/dialog';
 import {RadioButtonModule} from 'primeng/radiobutton';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import {AutoCompleteModule} from 'primeng/autocomplete';
+import { TerminalComponent } from './terminal/terminal.component';
+import { CommandBarComponent } from './command-bar/command-bar.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [HomeComponent, ToolbarComponent],
+  declarations: [HomeComponent, ToolbarComponent, TerminalComponent, CommandBarComponent],
   imports: [
     CommonModule,
     SharedModule,
     HomeRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
 
     // Primeng imports
     ButtonModule,

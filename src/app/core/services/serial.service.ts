@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 
-import * as SerialPort from 'serialport';
 import { from, BehaviorSubject } from 'rxjs';
 import { map, switchMap, filter, first } from 'rxjs/operators';
+
+import * as SerialPort from 'serialport';
+import * as Readline from '@serialport/parser-readline'
 
 export interface SerialPortDesc {
   path: string;
@@ -34,13 +36,19 @@ function serialDescFromInfo(p: SerialPort.PortInfo) {
 export class SerialService {
 
   private serialport: typeof SerialPort;
+  private readline: typeof Readline;
 
   private openPort;
   private availablePorts$ = new BehaviorSubject<SerialPortDesc[]>([]);
   private selectedPort$ = new BehaviorSubject<SerialPortDesc>(undefined);
 
+  private dataStream$ = new BehaviorSubject<string>(undefined);
+
+  private connectedDevice: SerialPortDesc;
+
   constructor() {
     this.serialport = window.require('serialport');
+    this.readline = window. require('@serialport/parser-readline');
 
     // const list = this.serialport.list()
     from(this.serialport.list()).pipe(map(ports => {
@@ -49,6 +57,10 @@ export class SerialService {
       console.log('port list:', list)
       this.availablePorts$.next(list);
     })
+  }
+
+  getDataStream() {
+    return this.dataStream$.asObservable();
   }
 
   getSerialPorts() {
@@ -67,9 +79,12 @@ export class SerialService {
       baudRate: 500000 // todo this.settingsService.getBaudRate(),
     });
     p.on('open', () => {
+      this.connectedDevice = device;
       device.connected = true;
       device.port = p;
       // this.connectedDevice = device;
+      const parser = p.pipe(new this.readline({ delimiter: '\n'}));
+      parser.on('data', (data) => this.dataStream$.next(data));
     });
     p.on('close', () => {
       console.log('[close] event for ', device.path);
@@ -87,4 +102,11 @@ export class SerialService {
   }
 
 
+  sendCommand(cmd: string) {
+    const p = this.connectedDevice;
+    if (p && p.port) {
+      p.port.write(cmd);
+      console.log('send cmd: ', cmd);
+    }
+  }
 }

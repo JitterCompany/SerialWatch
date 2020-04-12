@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SerialService, SerialPortDesc } from '../../core/services/serial.service';
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'sw-toolbar',
@@ -36,7 +35,6 @@ export class ToolbarComponent implements OnInit {
 
 
   constructor(
-    public http: HttpClient,
     private serialService: SerialService
   ) { }
 
