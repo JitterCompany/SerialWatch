@@ -6,8 +6,33 @@ import { HomeRoutingModule } from './home-routing.module';
 import { HomeComponent } from './home.component';
 import { SharedModule } from '../shared/shared.module';
 
+import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
+import { DropdownModule } from 'primeng/dropdown';
+import {SplitButtonModule} from 'primeng/splitbutton';
+// import {SharedModule as PSharedModule} from 'primeng/shared';
+import {ToolbarModule} from 'primeng/toolbar';
+import {DialogModule} from 'primeng/dialog';
+import {RadioButtonModule} from 'primeng/radiobutton';
+import { ToolbarComponent } from './toolbar/toolbar.component';
+import {AutoCompleteModule} from 'primeng/autocomplete';
+
 @NgModule({
-  declarations: [HomeComponent],
-  imports: [CommonModule, SharedModule, HomeRoutingModule]
+  declarations: [HomeComponent, ToolbarComponent],
+  imports: [
+    CommonModule,
+    SharedModule,
+    HomeRoutingModule,
+
+    // Primeng imports
+    ButtonModule,
+    InputTextModule,
+    DropdownModule,
+    SplitButtonModule,
+    ToolbarModule,
+    DialogModule,
+    RadioButtonModule,
+    AutoCompleteModule
+  ]
 })
 export class HomeModule {}

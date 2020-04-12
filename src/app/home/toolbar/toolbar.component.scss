@@ -1,0 +1,26 @@
+
+header {
+  background-color: lightgrey;
+  // height: 52px;
+  display: flex;
+  padding: 4px;
+}
+
+header > * {
+  margin-right: 16px;
+}
+
+.pi-circle-on.connected {
+  color: green;
+}
+
+.device {
+  display: flex;
+  align-items: center;
+  .pi-circle-on {
+    margin-right: 16px;
+  }
+  .device-meta {
+    color: gray;
+  }
+}

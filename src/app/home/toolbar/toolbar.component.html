@@ -1,0 +1,73 @@
+<header class="ui-g">
+
+
+  <div class="ui-inputgroup">
+    <!-- <input type="number" pInputText placeholder="Baudrate"> -->
+    <span class="ui-inputgroup-addon" style="line-height: 1;">Bd</span>
+
+    <p-autoComplete
+      placeholder="baudrate"
+      [(ngModel)]="baudrate"
+      [suggestions]="baudrateOptions"
+      [style]="{'height': '100%'}"
+      [dropdown]="true"
+      (completeMethod)="search($event)"
+      appendTo="body"
+      [minLength]="2"
+      [size]="10"
+      type="number"
+    ></p-autoComplete>
+  </div>
+
+  <div class="ui-inputgroup">
+    <span class="ui-inputgroup-addon" style="line-height: 1;">Split</span>
+    <p-dropdown [options]="newlineOptions"
+    [(ngModel)]="newline"
+    [style]="{'min-width': '80px', 'height': '100%'}"
+    placeholder="Select newline char"
+    dataKey="key"
+    appendTo="body">
+    </p-dropdown>
+  </div>
+
+  <div class="ui-inputgroup">
+    <span class="ui-inputgroup-addon" style="line-height: 1;">dev</span>
+
+    <p-dropdown *ngIf="(serialPorts$ | async); let ports" #sel
+    [options]="ports"
+    optionLabel="path"
+    [style]="{'min-width': '360px', 'height': '100%'}"
+    [autoWidth]="true"
+    [disabled]="ports.length === 0"
+    [placeholder]="ports.length ? 'Select a Device' : 'No Devices Found'"
+    emptyFilterMessage="No devices found"
+    [(ngModel)]="selectedDevice"
+    appendTo="body"
+    dataKey="path">
+    <ng-template let-item pTemplate="item">
+      <div class="device">
+        <i class="pi pi-circle-on" [ngClass]="{'connected': item.value.connected}"></i>
+        <div>
+          <div>{{item.label}}</div>
+          <div *ngIf="item.value.meta" class="device-meta">{{item.value.meta}}</div>
+        </div>
+      </div>
+    </ng-template>
+    <ng-template let-item pTemplate="selectedItem">
+      <span class="device">
+        <i class="pi pi-circle-on" [ngClass]="{'connected': item.value.connected}"></i>
+        <div>
+          <div>{{item.label}}</div>
+          <!-- <div *ngIf="item.value.meta" class="device-meta">{{item.value.meta}}</div> -->
+        </div>
+      </span>
+    </ng-template>
+  </p-dropdown>
+
+  <p-button *ngIf="!selectedDevice || !selectedDevice.connected" [disabled]="!selectedDevice" (click)="connect()" label="connect" icon="pi pi-play"></p-button>
+  <p-button *ngIf="selectedDevice && selectedDevice.connected" (click)="disconnect()" label="disconnect" icon="pi pi-pause"></p-button>
+</div>
+
+
+
+</header>
