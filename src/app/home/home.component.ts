@@ -1,5 +1,6 @@
 import { Component, OnInit, NgZone } from '@angular/core';
 import { SerialService } from '../core/services/serial.service';
+import { timer } from 'rxjs';
 
 @Component({
   selector: 'sw-home',
@@ -8,7 +9,7 @@ import { SerialService } from '../core/services/serial.service';
 })
 export class HomeComponent implements OnInit {
 
-
+  maxLines = 10000;
   lines: string[] = [];
 
   constructor(
@@ -17,14 +18,11 @@ export class HomeComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-
-    this.serialService.getDataStream().subscribe(line => {
-      console.log('got line:', line);
-      this.lines.push(line);
+    timer(100, 100).subscribe(() => {
       this.zone.run(() => {
-        this.lines = [...this.lines];
+        this.lines = this.serialService.getLines()
       });
-    })
+    });
   }
 
 }

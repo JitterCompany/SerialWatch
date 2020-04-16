@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { from, BehaviorSubject } from 'rxjs';
+import { from, BehaviorSubject, timer } from 'rxjs';
 import { map, switchMap, filter, first } from 'rxjs/operators';
 
 import * as SerialPort from 'serialport';
@@ -46,17 +46,22 @@ export class SerialService {
 
   private connectedDevice: SerialPortDesc;
 
+  private databuffer: string[] = []
+  private newLines = [];
+
+  private maxLines = 10000;
+
   constructor() {
     this.serialport = window.require('serialport');
     this.readline = window. require('@serialport/parser-readline');
 
     // const list = this.serialport.list()
-    from(this.serialport.list()).pipe(map(ports => {
-      return ports.map(p => serialDescFromInfo(p));
-    })).subscribe(list => {
-      console.log('port list:', list)
-      this.availablePorts$.next(list);
-    })
+    this.updatePortsList();
+    timer(100, 1000).subscribe(() => {
+      this.updatePortsList();
+    });
+
+
   }
 
   getDataStream() {
@@ -68,11 +73,37 @@ export class SerialService {
   }
 
   updatePortsList() {
-    // from(this.serialport.list()).pipe(map(ports => ports.filter(x => !!x['serialNumber']).map(p => {
+    from(this.serialport.list()).pipe(map(ports => {
+      return ports.map(p => {
+        const s = serialDescFromInfo(p)
 
-    // }
+        if (this.connectedDevice) {
+          if ((this.connectedDevice.path == s.path) &&
+              (this.connectedDevice.meta == s.meta) &&
+              this.connectedDevice.connected &&
+              !this.connectedDevice.port.isOpen)
+          {
+            console.log('reconnect!')
+            this.connect(s);
+          }
+        }
+        return s;
+      });
+    })).subscribe(newlist => {
+      const currentList = this.availablePorts$.value || [];
+      // SerialPort change detectioin
+      let changed = newlist.filter(item => !currentList.find(c => c.path === item.path));
+      changed = changed.concat(currentList.filter(item => !newlist.find(c => c.path === item.path)));
+
+      if (changed.length) {
+        this.availablePorts$.next(newlist);
+      }
+    })
   }
 
+  getLines() {
+    return this.databuffer;
+  }
   connect(device: SerialPortDesc) {
     console.log('Connect to', device.path);
     const p = new this.serialport(device.path, {
@@ -84,14 +115,18 @@ export class SerialService {
       device.port = p;
       // this.connectedDevice = device;
       const parser = p.pipe(new this.readline({ delimiter: '\n'}));
-      parser.on('data', (data) => this.dataStream$.next(data));
+      parser.on('data', (data) => this.addIncomingData(data)); //this.dataStream$.next(data));
+
     });
     p.on('close', () => {
       console.log('[close] event for ', device.path);
-      // this.updatePortsList();
     });
   }
 
+  addIncomingData(data: string[]) {
+    const K = this.databuffer.length + data.length - this.maxLines;
+    this.databuffer = this.databuffer.slice(K).concat(data)
+  }
 
   disconnect(device: SerialPortDesc) {
     console.log('Disconnect ', device.path);
