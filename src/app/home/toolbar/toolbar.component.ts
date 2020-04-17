@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { SerialService, SerialPortDesc } from '../../core/services/serial.service';
 import { Observable } from 'rxjs';
+import { SettingsService } from '../../core/services/settings.service';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'sw-toolbar',
@@ -12,13 +14,13 @@ export class ToolbarComponent implements OnInit {
   serialPorts$: Observable<SerialPortDesc[]>;
   selectedDevice: SerialPortDesc;
 
-  newlineOptions = [
-    {label:"None", value: "", key:0},
+  delimiterOptions = [
+    // {label:"None", value: "", key:0},
     {label: "\\n", value: "\n", key:1},
     {label:"\\r\\n", value: "\r\n", key:2}
   ];
 
-  newline = "\n";
+  delimiter = "\n";
 
   baudrateOptions = [
     9600,
@@ -33,13 +35,18 @@ export class ToolbarComponent implements OnInit {
     this.baudrateOptions = [...this.baudrateOptions]
   }
 
-
   constructor(
-    private serialService: SerialService
+    private serialService: SerialService,
+    private settings: SettingsService
   ) { }
 
   ngOnInit(): void {
     this.serialPorts$ = this.serialService.getSerialPorts();
+
+    this.settings.isReady().pipe(first()).subscribe(() => {
+      this.baudrate = this.settings.getBaudRate();
+      this.delimiter = this.settings.getDelimiter();
+    });
   }
 
   connect() {
@@ -48,11 +55,22 @@ export class ToolbarComponent implements OnInit {
     }
   }
 
-
   disconnect() {
     if (this.selectedDevice) {
       this.serialService.disconnect(this.selectedDevice);
     }
+  }
+
+  updateBaudrate() {
+    this.settings.saveBaudRate(+this.baudrate);
+  }
+
+  updateDelimiter() {
+    this.settings.saveNewlineChar(this.delimiter)
+  }
+
+  clear() {
+    this.serialService.clearBuffer();
   }
 
 }

@@ -8,6 +8,7 @@
     <p-autoComplete
       placeholder="baudrate"
       [(ngModel)]="baudrate"
+      (ngModelChange)="updateBaudrate($event)"
       [suggestions]="baudrateOptions"
       [style]="{'height': '100%'}"
       [dropdown]="true"
@@ -21,8 +22,9 @@
 
   <div class="ui-inputgroup">
     <span class="ui-inputgroup-addon" style="line-height: 1;">Split</span>
-    <p-dropdown [options]="newlineOptions"
-    [(ngModel)]="newline"
+    <p-dropdown [options]="delimiterOptions"
+    [(ngModel)]="delimiter"
+    (ngModelChange)="updateDelimiter($event)"
     [style]="{'min-width': '80px', 'height': '100%'}"
     placeholder="Select newline char"
     dataKey="key"
@@ -67,6 +69,8 @@
   <p-button *ngIf="selectedDevice && selectedDevice.connected" (click)="disconnect()" label="disconnect" icon="pi pi-pause"></p-button>
 </div>
 
-
+<div class="ui-inputgroup" style="align-self: flex-end;">
+  <p-button (click)="clear()" label="clear" styleClass="ui-button-warning" icon="pi pi-times"></p-button>
+</div>
 
 </header>
