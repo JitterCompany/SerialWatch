@@ -61,11 +61,11 @@ export class ToolbarComponent implements OnInit {
     }
   }
 
-  updateBaudrate() {
+  updateBaudrate(event) {
     this.settings.saveBaudRate(+this.baudrate);
   }
 
-  updateDelimiter() {
+  updateDelimiter(event) {
     this.settings.saveNewlineChar(this.delimiter)
   }
 

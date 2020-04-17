@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "angular-electron": {
+    "serial-watch": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -92,24 +92,24 @@
         "serve": {
           "builder": "@angular-builders/custom-webpack:dev-server",
           "options": {
-            "browserTarget": "angular-electron:build"
+            "browserTarget": "serial-watch:build"
           },
           "configurations": {
             "dev": {
-              "browserTarget": "angular-electron:build:dev"
+              "browserTarget": "serial-watch:build:dev"
             },
             "web": {
-              "browserTarget": "angular-electron:build:web"
+              "browserTarget": "serial-watch:build:web"
             },
             "production": {
-              "browserTarget": "angular-electron:build:production"
+              "browserTarget": "serial-watch:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "angular-electron:build"
+            "browserTarget": "serial-watch:build"
           }
         },
         "test": {
@@ -147,7 +147,7 @@
         }
       }
     },
-    "angular-electron-e2e": {
+    "serial-watch-e2e": {
       "root": "e2e",
       "projectType": "application",
       "architect": {
@@ -166,7 +166,7 @@
       }
     }
   },
-  "defaultProject": "angular-electron",
+  "defaultProject": "serial-watch",
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "sw",

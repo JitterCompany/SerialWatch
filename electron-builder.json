@@ -1,5 +1,5 @@
 {
-  "productName": "angular-electron",
+  "productName": "Serial Watch",
   "directories": {
     "output": "release/"
   },

@@ -40,7 +40,8 @@
     "rebuild": "electron-rebuild -v $(electron -v)"
   },
   "dependencies": {
-    "serialport": "8.0.5"
+    "serialport": "8.0.5",
+    "electron-json-storage": "4.1.8"
   },
   "devDependencies": {
     "@angular-builders/custom-webpack": "9.1.0",
@@ -75,7 +76,6 @@
     "cross-env": "7.0.2",
     "electron": "8.2.1",
     "electron-builder": "22.4.1",
-    "electron-json-storage": "4.1.8",
     "electron-rebuild": "1.10.1",
     "electron-reload": "1.5.0",
     "eslint": "6.8.0",
