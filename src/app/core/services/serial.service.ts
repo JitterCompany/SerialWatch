@@ -6,6 +6,11 @@ import { map, switchMap, filter, first } from 'rxjs/operators';
 import * as SerialPort from 'serialport';
 import * as Readline from '@serialport/parser-readline'
 
+interface SerialPortCallbacks {
+  open: () => void;
+  close: () => void;
+}
+
 export class SerialPortDesc {
   public removed: boolean = false;
   public connected: boolean = false;
@@ -19,7 +24,29 @@ export class SerialPortDesc {
   }
 
   equals(other: SerialPortDesc) {
+    if (!other) {
+      return false;
+    }
     return (this.path == other.path) && (this.meta == other.meta);
+  }
+
+  connect(serial, cb: SerialPortCallbacks) {
+    this.port = new serial(this.path, {
+      baudRate: 500000 // todo this.settingsService.getBaudRate(),
+    });
+
+    this.port.on('open', () => {
+      this.connected = true;
+      cb.open();
+    });
+    this.port.on('close', cb.close);
+  }
+
+  disconnect() {
+    if (this.port.isOpen) {
+      this.port.close();
+    }
+    this.connected = false;
   }
 }
 
@@ -47,7 +74,6 @@ export class SerialService {
     timer(100, 1000).subscribe(() => {
       this.updatePortsList();
     });
-
 
   }
 
@@ -86,27 +112,24 @@ export class SerialService {
     return this.databuffer;
   }
   connect(device: SerialPortDesc) {
-    if (this.connectedDevice && this.connectedDevice.port.isOpen) {
+    if (device.equals(this.connectedDevice)) {
+      // nothing to do
+      return;
+    } else if (this.connectedDevice && this.connectedDevice.port.isOpen) {
       console.log('disconnecting other device first');
       this.disconnect(this.connectedDevice);
     }
-    console.log('Connect to', device.path);
-    const p = new this.serialport(device.path, {
-      baudRate: 500000 // todo this.settingsService.getBaudRate(),
-    });
-    p.on('open', () => {
-      console.log('[open] event for ', device.path);
-      this.connectedDevice = device;
-      device.connected = true;
-      device.port = p;
-      const parser = p.pipe(new this.readline({ delimiter: '\n'}));
-      parser.on('data', (data) => this.addIncomingData(data)); //this.dataStream$.next(data));
-      this.updatePortsList();
 
-    });
-    p.on('close', () => {
-      console.log('[close] event for ', device.path);
-      this.updatePortsList();
+    device.connect(this.serialport, {
+      open: () => {
+        console.log('[open] event for ', device.path);
+        this.connectedDevice = device;
+        const parser = this.connectedDevice.port.pipe(new this.readline({ delimiter: '\n'}));
+        parser.on('data', (data) => this.addIncomingData(data)); //this.dataStream$.next(data));
+      },
+      close: () => {
+        console.log('[close] event for ', device.path);
+      }
     });
   }
 
@@ -118,10 +141,7 @@ export class SerialService {
   disconnect(device: SerialPortDesc) {
     if (device) {
       console.log('Disconnect ', device.path);
-      if (device.port.isOpen) {
-        device.port.close();
-      }
-      device.connected = false;
+      device.disconnect();
       this.connectedDevice = null;
     }
   }
