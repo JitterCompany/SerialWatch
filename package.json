@@ -40,7 +40,7 @@
     "rebuild": "electron-rebuild -v $(electron -v)"
   },
   "dependencies": {
-    "serialport": "8.0.7"
+    "serialport": "8.0.5"
   },
   "devDependencies": {
     "@angular-builders/custom-webpack": "9.1.0",
