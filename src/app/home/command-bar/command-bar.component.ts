@@ -5,12 +5,17 @@ import { SerialService } from '../../core/services/serial.service';
 @Component({
   selector: 'sw-command-bar',
   templateUrl: './command-bar.component.html',
-  styleUrls: ['./command-bar.component.css']
+  styleUrls: ['./command-bar.component.scss']
 })
 export class CommandBarComponent implements OnInit {
 
   cmdForm: FormGroup;
 
+  inputMethod = 'ASCII';
+  inputOptions = [
+    {label: 'ASCII', value: 'ASCII'},
+    {label: 'HEX', value: 'HEX'},
+  ];
   constructor(
     private fb: FormBuilder,
     private serialService: SerialService

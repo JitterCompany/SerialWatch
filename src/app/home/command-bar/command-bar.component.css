@@ -1,8 +1,0 @@
-
-.command {
-  display: flex;
-  flex-flow: column nowrap;
-  height: 44px;
-
-  background: grey;
-}

@@ -1,7 +1,13 @@
 <p-toolbar>
-  <form class="ui-inputgroup" [formGroup]="cmdForm" (submit)="sendCMD()">
-    <span class="ui-inputgroup-addon">CMD</span>
-    <input pInpuText formControlName="cmd" type="text" placeholder="Command" style="width:100%">
+  <div class="ui-toolbar-group-left">
+    <span class="ui-inputgroup-addon">
+      <p-selectButton [options]="inputOptions" [(ngModel)]="inputMethod"></p-selectButton>
+    </span>
+  </div>
+  <div>
+  <form class="ui-inputgroup cmd-form" [formGroup]="cmdForm" (submit)="sendCMD()">
+    <input pInpuText formControlName="cmd" type="text" placeholder="Command">
     <button [disabled]="!cmdForm.valid" class="ui-button-success" pButton type="submit" label="SEND"></button>
   </form>
+  </div>
 </p-toolbar>
