@@ -28,6 +28,6 @@ export class CommandBarComponent implements OnInit {
   }
 
   sendCMD() {
-    this.serialService.sendCommand(this.cmdForm.value.cmd + '\r\n');
+    this.serialService.sendCommand(this.cmdForm.value.cmd, this.inputMethod);
   }
 }

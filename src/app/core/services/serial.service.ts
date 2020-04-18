@@ -7,9 +7,22 @@ import * as SerialPort from 'serialport';
 import * as Readline from '@serialport/parser-readline'
 import { SettingsService } from './settings.service';
 
-interface SerialPortCallbacks {
+export interface SerialPortCallbacks {
   open: () => void;
   close: () => void;
+}
+
+function hexStringToByte(str: string): Uint8Array {
+  if (!str) {
+    return new Uint8Array();
+  }
+
+  let a = [];
+  for (let i = 0, len = str.length; i < len; i+=2) {
+    a.push(parseInt(str.substr(i,2),16));
+  }
+
+  return new Uint8Array(a);
 }
 
 export class SerialPortDesc {
@@ -167,11 +180,22 @@ export class SerialService {
     }
   }
 
-  sendCommand(cmd: string) {
+  /**
+   *
+   * @param cmd
+   * @param cmdType 'ASCII' or 'HEX'
+   */
+  sendCommand(cmd: string, cmdType: string) {
     const p = this.connectedDevice;
     if (p && p.port) {
-      p.port.write(cmd);
-      console.log('send cmd: ', cmd);
+      let buf: string | Buffer = cmd;
+      if (cmdType == 'HEX') {
+        buf = Buffer.from(hexStringToByte(cmd));
+      } else {
+        buf = cmd + this.parser.delimiter;
+      }
+      p.port.write(buf);
+      console.log('send cmd: ', buf);
     }
   }
 

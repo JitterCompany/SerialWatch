@@ -6,6 +6,10 @@
   </div>
   <div>
   <form class="ui-inputgroup cmd-form" [formGroup]="cmdForm" (submit)="sendCMD()">
+    <span class="ui-inputgroup-addon">
+      <span *ngIf="inputMethod == 'HEX'">0x</span>
+      <span *ngIf="inputMethod == 'ASCII'">></span>
+    </span>
     <input pInpuText formControlName="cmd" type="text" placeholder="Command">
     <button [disabled]="!cmdForm.valid" class="ui-button-success" pButton type="submit" label="SEND"></button>
   </form>
