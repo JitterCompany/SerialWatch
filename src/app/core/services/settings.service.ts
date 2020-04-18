@@ -82,7 +82,6 @@ export class SettingsService {
 
   savePrefixColors(prefixColors: PrefixColor[]) {
     if (!this.preferences) {
-      // too soon.. todo should we remember this?
       return;
     }
 
@@ -111,7 +110,6 @@ export class SettingsService {
 
   saveBaudRate(newbaudrate: number) {
     if (!this.preferences) {
-      // too soon.. todo should we remember this?
       return;
     }
 
@@ -128,7 +126,6 @@ export class SettingsService {
 
   saveNewlineChar(char: string) {
     if (!this.preferences) {
-      // too soon.. todo should we remember this?
       return;
     }
 
@@ -146,9 +143,9 @@ export class SettingsService {
   saveSelectedPort(path: string) {
 
     if (!this.preferences) {
-      // too soon.. todo should we remember this?
       return;
     }
+
     this.preferences.prevPort = path;
     this.save();
   }
