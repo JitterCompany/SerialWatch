@@ -57,7 +57,10 @@ export class SettingsService {
 
         console.log('loaded settings: ', data);
         this.preferences = <Preferences>data;
+        // this.prefixLookUptable = new Map(this.preferences.prefixColors.map((p) => [p.prefix, p.color]));
         this.preferencesLoaded$.next(true);
+
+
       });
     }
   }
@@ -77,6 +80,16 @@ export class SettingsService {
 
   getPrefixColors() {
     return this.preferences.prefixColors;
+  }
+
+  getPrefixColor(line: string) {
+    const prefixes = this.preferences.prefixColors;
+    for (let i=0; i < prefixes.length; i++) {
+      if (line.startsWith(prefixes[i].prefix)) {
+        return prefixes[i].color;
+      }
+    }
+    return '';
   }
 
 
