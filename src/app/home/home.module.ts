@@ -19,9 +19,10 @@ import {AutoCompleteModule} from 'primeng/autocomplete';
 import { TerminalComponent } from './terminal/terminal.component';
 import { CommandBarComponent } from './command-bar/command-bar.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SettingsComponent } from './settings/settings.component';
 
 @NgModule({
-  declarations: [HomeComponent, ToolbarComponent, TerminalComponent, CommandBarComponent],
+  declarations: [HomeComponent, ToolbarComponent, TerminalComponent, CommandBarComponent, SettingsComponent],
   imports: [
     CommonModule,
     SharedModule,

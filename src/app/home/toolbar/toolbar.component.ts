@@ -3,6 +3,7 @@ import { SerialService, SerialPortDesc } from '../../core/services/serial.servic
 import { Observable } from 'rxjs';
 import { SettingsService } from '../../core/services/settings.service';
 import { first } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'sw-toolbar',
@@ -37,7 +38,8 @@ export class ToolbarComponent implements OnInit {
 
   constructor(
     private serialService: SerialService,
-    private settings: SettingsService
+    private settings: SettingsService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -71,6 +73,10 @@ export class ToolbarComponent implements OnInit {
 
   clear() {
     this.serialService.clearBuffer();
+  }
+
+  openSettings() {
+    this.router.navigate(['settings']);
   }
 
 }

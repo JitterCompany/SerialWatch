@@ -27,7 +27,8 @@
 }
 
 .terminal-wrapper {
-  // TODO: why is a fixed height required?
-  height: calc(100vh - #{$footer-height} - #{$header-height});
-  flex: 1;
+  flex: 1 1 auto;
+  // Somehow a height or min-height is needed to prevent terminal from expanding this wrapper
+  min-height: 20%;
+  max-height: calc(100vh - #{$footer-height} - #{$header-height});
 }
