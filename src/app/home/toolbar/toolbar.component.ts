@@ -45,6 +45,10 @@ export class ToolbarComponent implements OnInit {
   ngOnInit(): void {
     this.serialPorts$ = this.serialService.getSerialPorts();
 
+    this.serialService.getSerialPorts().pipe(first()).subscribe(ports => {
+      this.selectedDevice = ports.find(p => p.connected);
+    });
+
     this.settings.isReady().pipe(first()).subscribe(() => {
       this.baudrate = this.settings.getBaudRate();
       this.delimiter = this.settings.getDelimiter();
