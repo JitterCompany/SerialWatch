@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { from, BehaviorSubject, timer } from 'rxjs';
-import { map, switchMap, filter, first } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 import * as SerialPort from 'serialport';
 import * as Readline from '@serialport/parser-readline'
@@ -25,14 +25,23 @@ function hexStringToByte(str: string): Uint8Array {
   return new Uint8Array(a);
 }
 
+/**
+ * available connected
+ * 1         0
+ * 1         1
+ * 0         1
+ **/
+
 export class SerialPortDesc {
   public removed: boolean = false;
   public connected: boolean = false;
+  public available: boolean = false;
   public path: string;
   public meta: string;
   public port: SerialPort;
 
   constructor(public info: SerialPort.PortInfo) {
+    this.available = true;
     this.path = info.path;
     this.meta = info.manufacturer + '/' + info.serialNumber;
   }
@@ -45,6 +54,12 @@ export class SerialPortDesc {
   }
 
   connect(serial, baudRate: number, cb: SerialPortCallbacks) {
+    if (!this.available) {
+      // autoconnect on next availability
+      this.connected = true;
+      return;
+    }
+
     this.port = new serial(this.path, {baudRate});
 
     this.port.on('open', () => {
@@ -117,26 +132,30 @@ export class SerialService {
 
   updatePortsList() {
     from(this.serialport.list()).pipe(map(ports => {
-      return ports.map(p => {
-        const s = new SerialPortDesc(p);
-
-        if (this.connectedDevice) {
-          if (this.connectedDevice.equals(s) && !this.connectedDevice.port.isOpen) {
-            console.log('reconnect!')
-            this.connect(s);
-          }
-        }
-        return s;
-      });
+      return ports.map(p => new SerialPortDesc(p)); //TODO: add black/white list filtering here
     })).subscribe(newlist => {
       const currentList = this.availablePorts$.value || [];
       // SerialPort change detection
-      let added = newlist.filter(item => !currentList.find(c => c.path === item.path));
-      const removed = currentList.filter(item => !newlist.find(c => c.path === item.path));
+      const added = newlist.filter(item => !currentList.find(c => c.path === item.path));
+      const removed = currentList.filter(item => (item.available === true) && !newlist.find(c => c.path === item.path));
+      const readded = currentList.filter(item => (item.available === false) && newlist.find(c => (c.path === item.path)));
+      // console.log(`added: ${added.length}, removed: ${removed.length}, re-added: ${readded.length}`)
 
-      // changed = changed.concat(currentList.filter(item => !newlist.find(c => c.path === item.path)));
-      if (added.length || removed.length) {
-        this.availablePorts$.next(newlist);
+      removed.forEach(dev => {
+        dev.available = false;
+      });
+
+      readded.forEach(dev => {
+        dev.available = true;
+        console.log('set available', dev.path, this.connectedDevice.equals(dev), (!this.connectedDevice.port || !this.connectedDevice.port.isOpen));
+        if (this.connectedDevice && this.connectedDevice.equals(dev) && (!this.connectedDevice.port || !this.connectedDevice.port.isOpen)) {
+          console.log('reconnect!')
+          this.connect(dev);
+        }
+      });
+
+      if (added.length || removed.length || readded.length) {
+        this.availablePorts$.next(currentList.concat(added));
       }
 
     })
@@ -145,21 +164,27 @@ export class SerialService {
   getLines() {
     return this.databuffer;
   }
+
+  refreshList() {
+    this.availablePorts$.next([]);
+  }
+
   connect(device: SerialPortDesc) {
-    if (device.equals(this.connectedDevice)) {
-      // nothing to do
+    if (!device) {
       return;
-    } else if (this.connectedDevice && this.connectedDevice.port.isOpen) {
+    }
+
+    if (this.connectedDevice && this.connectedDevice.port && this.connectedDevice.port.isOpen) {
       console.log('disconnecting other device first');
       this.disconnect(this.connectedDevice);
     }
 
+    this.connectedDevice = device;
     device.connect(this.serialport, this.settings.getBaudRate(), {
       open: () => {
         console.log('[open] event for ', device.path);
-        this.connectedDevice = device;
         this.parser = this.connectedDevice.port.pipe(new this.readline({ delimiter: this.settings.getDelimiter()}));
-        this.parser.on('data', (data) => this.addIncomingData(data)); //this.dataStream$.next(data));
+        this.parser.on('data', (data) => this.addIncomingData(data));
       },
       close: () => {
         console.log('[close] event for ', device.path);

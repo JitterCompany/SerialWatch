@@ -79,6 +79,10 @@ export class ToolbarComponent implements OnInit {
     this.serialService.clearBuffer();
   }
 
+  refresh() {
+    this.serialService.refreshList();
+  }
+
   openSettings() {
     this.router.navigate(['settings']);
   }

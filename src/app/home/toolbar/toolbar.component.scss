@@ -10,8 +10,20 @@ header > * {
   margin-right: 16px;
 }
 
+.pi-circle-on.not-available {
+  color: grey;
+}
 .pi-circle-on.connected {
-  color: green;
+  color: $success-color;
+}
+.pi-circle-on.disconnected {
+  color: $error-color;
+}
+.greenbg {
+  background-color: $success-color;
+}
+.redbg {
+  background-color: $error-color;
 }
 
 .device {
@@ -22,5 +34,10 @@ header > * {
   }
   .device-meta {
     color: gray;
+  }
+
+  .strike {
+    text-decoration: line-through;
+    color: grey;
   }
 }

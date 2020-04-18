@@ -1,4 +1,6 @@
-<header class="ui-g">
+<header class="ui-g" [ngClass]="{
+  'greenbg' : !!selectedDevice && selectedDevice.connected && selectedDevice.available,
+  'redbg' :   !!selectedDevice && selectedDevice.connected && !selectedDevice.available}">
 
 
   <div class="ui-inputgroup">
@@ -47,8 +49,12 @@
     dataKey="path">
     <ng-template let-item pTemplate="item">
       <div class="device">
-        <i class="pi pi-circle-on" [ngClass]="{'connected': item.value.connected}"></i>
-        <div>
+        <i class="pi pi-circle-on" [ngClass]="{
+          'connected': item.value.connected && item.value.available,
+          'not-available': !item.value.connected && !item.value.available,
+          'disconnected': item.value.connected && !item.value.available}">
+        </i>
+        <div [ngClass]="{'strike': !item.value.available}">
           <div>{{item.label}}</div>
           <div *ngIf="item.value.meta" class="device-meta">{{item.value.meta}}</div>
         </div>
@@ -56,9 +62,13 @@
     </ng-template>
     <ng-template let-item pTemplate="selectedItem">
       <span class="device">
-        <i class="pi pi-circle-on" [ngClass]="{'connected': item.value.connected}"></i>
+        <i class="pi pi-circle-on" [ngClass]="{
+          'connected': item.value.connected && item.value.available,
+          'not-available': !item.value.connected && !item.value.available,
+          'disconnected': item.value.connected && !item.value.available}">
+          </i>
         <div>
-          <div>{{item.label}}</div>
+          <div [ngClass]="{'strike': !item.value.available}">{{item.label}}</div>
           <!-- <div *ngIf="item.value.meta" class="device-meta">{{item.value.meta}}</div> -->
         </div>
       </span>
@@ -67,10 +77,13 @@
 
   <p-button *ngIf="!selectedDevice || !selectedDevice.connected" [disabled]="!selectedDevice" (click)="connect()" label="connect" icon="pi pi-play"></p-button>
   <p-button *ngIf="selectedDevice && selectedDevice.connected" (click)="disconnect()" label="disconnect" icon="pi pi-pause"></p-button>
+
+  <p-button (click)="refresh()" label="" pTooltip="Reset device list" showDelay="200" styleClass="ui-button-warning" icon="pi pi-refresh"></p-button>
+
 </div>
 
 <div class="ui-inputgroup" style="align-self: flex-end;">
-  <p-button (click)="clear()" label="clear" styleClass="ui-button-warning" icon="pi pi-times"></p-button>
+  <p-button (click)="clear()" label="clear" pTooltip="Clear terminal contents" showDelay="1000" styleClass="ui-button-warning" icon="pi pi-times"></p-button>
 </div>
 
 <div class="ui-inputgroup" style="align-self: flex-end;">

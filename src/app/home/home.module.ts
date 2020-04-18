@@ -9,14 +9,13 @@ import { SharedModule } from '../shared/shared.module';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { DropdownModule } from 'primeng/dropdown';
-import {SplitButtonModule} from 'primeng/splitbutton';
 import {ToolbarModule} from 'primeng/toolbar';
-import {DialogModule} from 'primeng/dialog';
-import {RadioButtonModule} from 'primeng/radiobutton';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import {AutoCompleteModule} from 'primeng/autocomplete';
 import {ColorPickerModule} from 'primeng/colorpicker';
 import {SelectButtonModule} from 'primeng/selectbutton';
+import {TooltipModule} from 'primeng/tooltip';
+
 
 import { TerminalComponent } from './terminal/terminal.component';
 import { CommandBarComponent } from './command-bar/command-bar.component';
@@ -43,6 +42,7 @@ import { LineComponent } from './line/line.component';
     AutoCompleteModule,
     ColorPickerModule,
     SelectButtonModule,
+    TooltipModule,
   ]
 })
 export class HomeModule {}
