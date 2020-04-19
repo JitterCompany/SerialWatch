@@ -1,14 +1,19 @@
 <p-toolbar>
-  <form class="ui-inputgroup cmd-form" [formGroup]="cmdForm" (submit)="sendCMD()" #form="ngForm">
-    <p-selectButton [options]="inputOptions" formControlName="inputMethod"></p-selectButton>
+  <div class="ui-toolbar-group-left">
     <span class="ui-inputgroup-addon">
-      <span *ngIf="form.value.inputMethod == 'HEX'"><b>0x</b></span>
-      <span *ngIf="form.value.inputMethod == 'ASCII'"><i class="pi pi-angle-right"  style="line-height: 1.25;"></i>
-      </span>
+      <p-selectButton [options]="inputOptions" [(ngModel)]="inputMethod"></p-selectButton>
+    </span>
+  </div>
+  <div>
+  <form class="ui-inputgroup cmd-form" [formGroup]="cmdForm" (submit)="sendCMD()">
+    <span class="ui-inputgroup-addon">
+      <span *ngIf="inputMethod == 'HEX'">0x</span>
+      <span *ngIf="inputMethod == 'ASCII'">></span>
     </span>
     <input pInputText formControlName="cmd" type="text" placeholder="Command" />
     <button [disabled]="!cmdForm.valid" class="ui-button-success" pButton type="submit" label="SEND"></button>
   </form>
+  </div>
 </p-toolbar>
 
 <ng-keyboard-shortcuts-help [key]="'f1'" [closeKey]="'escape'" [title]="Help"></ng-keyboard-shortcuts-help>
