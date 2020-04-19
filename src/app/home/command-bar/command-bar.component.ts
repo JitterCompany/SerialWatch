@@ -51,11 +51,12 @@ export class CommandBarComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.cmdForm = this.fb.group({
-      cmd: ['', Validators.required]
+      cmd: ['', Validators.required],
+      inputMethod: ['ASCII', Validators.required]
     });
   }
 
   sendCMD() {
-    this.serialService.sendCommand(this.cmdForm.value.cmd, this.inputMethod);
+    this.serialService.sendCommand(this.cmdForm.value.cmd, this.cmdForm.value.inputMethod);
   }
 }
