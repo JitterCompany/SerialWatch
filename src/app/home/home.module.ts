@@ -16,6 +16,7 @@ import {ColorPickerModule} from 'primeng/colorpicker';
 import {SelectButtonModule} from 'primeng/selectbutton';
 import {TooltipModule} from 'primeng/tooltip';
 
+import { KeyboardShortcutsModule, KeyboardShortcutsHelpService }     from 'ng-keyboard-shortcuts';
 
 import { TerminalComponent } from './terminal/terminal.component';
 import { CommandBarComponent } from './command-bar/command-bar.component';
@@ -43,6 +44,10 @@ import { LineComponent } from './line/line.component';
     ColorPickerModule,
     SelectButtonModule,
     TooltipModule,
-  ]
+
+    KeyboardShortcutsModule.forRoot(),
+
+  ],
+  providers: [KeyboardShortcutsHelpService]
 })
 export class HomeModule {}
