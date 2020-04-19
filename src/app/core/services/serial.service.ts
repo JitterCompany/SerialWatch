@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { from, BehaviorSubject, timer } from 'rxjs';
+import { from, BehaviorSubject, timer, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import * as SerialPort from 'serialport';
@@ -92,6 +92,7 @@ export class SerialService {
   private readline: typeof Readline;
   private parser;
 
+  public connected$ = new Subject();
   private availablePorts$ = new BehaviorSubject<SerialPortDesc[]>([]);
 
   private connectedDevice: SerialPortDesc;
@@ -141,6 +142,12 @@ export class SerialService {
       const readded = currentList.filter(item => (item.available === false) && newlist.find(c => (c.path === item.path)));
       // console.log(`added: ${added.length}, removed: ${removed.length}, re-added: ${readded.length}`)
 
+      added.forEach(dev => {
+        if (this.connectedDevice && this.connectedDevice.equals(dev)) {
+          this.connect(dev);
+        }
+      });
+
       removed.forEach(dev => {
         dev.available = false;
       });
@@ -167,6 +174,11 @@ export class SerialService {
 
   refreshList() {
     this.availablePorts$.next([]);
+    if (this.connectedDevice && !this.connectedDevice.available) {
+      this.connectedDevice = null;
+    }
+    this.updatePortsList();
+    this.connected$.next();
   }
 
   connect(device: SerialPortDesc) {
@@ -185,6 +197,7 @@ export class SerialService {
         console.log('[open] event for ', device.path);
         this.parser = this.connectedDevice.port.pipe(new this.readline({ delimiter: this.settings.getDelimiter()}));
         this.parser.on('data', (data) => this.addIncomingData(data));
+        this.connected$.next();
       },
       close: () => {
         console.log('[close] event for ', device.path);

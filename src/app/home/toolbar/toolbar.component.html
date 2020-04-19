@@ -1,6 +1,6 @@
 <header class="ui-g" [ngClass]="{
-  'greenbg' : !!selectedDevice && selectedDevice.connected && selectedDevice.available,
-  'redbg' :   !!selectedDevice && selectedDevice.connected && !selectedDevice.available}">
+  'greenbg' : !!selectedDevice && selectedDevice.available && selectedDevice.connected,
+  'redbg' :   !!selectedDevice && !selectedDevice.available && selectedDevice.connected}">
 
 
   <div class="ui-inputgroup">
