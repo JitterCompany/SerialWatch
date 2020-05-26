@@ -8,9 +8,9 @@ import { SharedModule } from '../shared/shared.module';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 
 import { SettingsComponent } from './settings/settings.component';
-import { PlotComponent } from './plot/plot.component';
 
 import { TerminalModule } from '../modules/terminal/terminal.module'
+import { PlotModule } from '../modules/plot/plot.module'
 
 
 @NgModule({
@@ -18,11 +18,12 @@ import { TerminalModule } from '../modules/terminal/terminal.module'
     HomeComponent,
     ToolbarComponent,
     SettingsComponent,
-    PlotComponent],
+  ],
   imports: [
     SharedModule,
     HomeRoutingModule,
     TerminalModule,
+    PlotModule,
   ],
   providers: []
 })

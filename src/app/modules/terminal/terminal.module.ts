@@ -6,6 +6,9 @@ import { LineComponent } from './line/line.component';
 import { TerminalComponent } from './terminal.component';
 import { KeyboardShortcutsModule, KeyboardShortcutsHelpService } from 'ng-keyboard-shortcuts';
 import { SharedModule } from '../../shared/shared.module';
+import { PluginService, Plugin } from '../../core/services/plugin.service';
+
+import { TerminalService } from './terminal.service';
 
 @NgModule({
   declarations: [
@@ -22,7 +25,20 @@ import { SharedModule } from '../../shared/shared.module';
     TerminalComponent
   ],
   providers: [
-    KeyboardShortcutsHelpService
+    TerminalService,
+    KeyboardShortcutsHelpService,
   ]
 })
-export class TerminalModule { }
+export class TerminalModule implements Plugin {
+
+  name = "terminal";
+  stream$ = this.terminalService.stream$;
+
+  constructor(
+    private pluginService: PluginService,
+    private terminalService: TerminalService
+  ) {
+    console.log( "TerminalModule constructor." );
+    this.pluginService.registerPlugin(this);
+	}
+}

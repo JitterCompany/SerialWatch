@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DispatchService } from '../../core/services/dispatch.service';
-import { Subject } from 'rxjs';
+import { TerminalService } from './terminal.service';
 
 @Component({
   selector: 'sw-terminal',
@@ -10,16 +9,13 @@ import { Subject } from 'rxjs';
 export class TerminalComponent implements OnInit {
 
   lines: string[] = [];
-  private terminalStream$ = new Subject<string>();
 
   constructor(
-    private dispatchService: DispatchService,
+    private terminalService: TerminalService
   ) { }
 
   ngOnInit(): void {
-    this.dispatchService.subscribePlugin('terminal', this.terminalStream$);
-
-    this.terminalStream$.subscribe(lines => {
+    this.terminalService.stream$.subscribe(lines => {
       this.lines = this.lines.concat(lines);
     });
   }
