@@ -24,9 +24,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SettingsComponent } from './settings/settings.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LineComponent } from './line/line.component';
+import { PlotComponent } from './plot/plot.component';
 
 @NgModule({
-  declarations: [HomeComponent, ToolbarComponent, TerminalComponent, CommandBarComponent, SettingsComponent, LineComponent],
+  declarations: [HomeComponent, ToolbarComponent, TerminalComponent, CommandBarComponent, SettingsComponent, LineComponent, PlotComponent],
   imports: [
     CommonModule,
     SharedModule,

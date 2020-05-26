@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 
-import { from, BehaviorSubject, timer, Subject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { from, BehaviorSubject, timer, Subject, Observable, Subscription } from 'rxjs';
+import { map, bufferTime } from 'rxjs/operators';
+
+import {streamToRx} from 'rxjs-stream';
 
 import * as SerialPort from 'serialport';
 import * as Readline from '@serialport/parser-readline'
@@ -96,10 +98,7 @@ export class SerialService {
   private availablePorts$ = new BehaviorSubject<SerialPortDesc[]>([]);
 
   private connectedDevice: SerialPortDesc;
-
-  private databuffer: string[] = []
-
-  private maxLines = 10000;
+  private subscription: Subscription;
 
   constructor(
     private settings: SettingsService
@@ -169,7 +168,8 @@ export class SerialService {
   }
 
   getLines() {
-    return this.databuffer;
+    return [];//this.stream$;
+    // return this.databuffer;
   }
 
   refreshList() {
@@ -196,7 +196,18 @@ export class SerialService {
       open: () => {
         console.log('[open] event for ', device.path);
         this.parser = this.connectedDevice.port.pipe(new this.readline({ delimiter: this.settings.getDelimiter()}));
-        this.parser.on('data', (data) => this.addIncomingData(data));
+        // this.stream$ = streamToRx(this.connectedDevice.port)
+        if (this.subscription) {
+          this.subscription.unsubscribe();
+          this.subscription = null;
+        }
+        this.subscription = streamToRx<string>(this.parser).subscribe({
+          next: (val) => this.parseAndDispatch(val),
+          error: (err) => console.error("error in text stream: ", err)
+        })
+
+
+        // this.stream$.subscribe(x => console.log('stream:', x));
         this.connected$.next();
       },
       close: () => {
@@ -205,9 +216,16 @@ export class SerialService {
     });
   }
 
-  addIncomingData(data: string[]) {
-    const K = this.databuffer.length + data.length - this.maxLines;
-    this.databuffer = this.databuffer.slice(K).concat(data)
+  plugins = new Map<string, Subject<string>>();
+
+  subscribePlugin(name: string, stream: Subject<string>) {
+    this.plugins.set(name, stream);
+  }
+
+  parseAndDispatch(line: string) {
+    this.plugins.forEach((stream, name) => {
+      stream.next(line);
+    });
   }
 
   disconnect(device: SerialPortDesc) {
@@ -237,7 +255,4 @@ export class SerialService {
     }
   }
 
-  clearBuffer() {
-    this.databuffer = [];
-  }
 }

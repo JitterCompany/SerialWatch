@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, AfterViewInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { SerialService } from '../../core/services/serial.service';
 import { ShortcutInput, ShortcutEventOutput, KeyboardShortcutsComponent, AllowIn } from "ng-keyboard-shortcuts";
+import { DataService } from '../../core/services/data.service';
 
 @Component({
   selector: 'sw-command-bar',
@@ -21,7 +22,7 @@ export class CommandBarComponent implements OnInit, AfterViewInit {
       description: "Clear text output on screen",
       preventDefault: true,
       allowIn: [AllowIn.Input],
-      command: (output: ShortcutEventOutput) => this.serialService.clearBuffer(),
+      command: (output: ShortcutEventOutput) => this.dataService.clearBuffer(),
     },
     {
       key: "up",
@@ -46,7 +47,8 @@ export class CommandBarComponent implements OnInit, AfterViewInit {
   ];
   constructor(
     private fb: FormBuilder,
-    private serialService: SerialService
+    private serialService: SerialService,
+    private dataService: DataService
   ) { }
 
   ngOnInit() {

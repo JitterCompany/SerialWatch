@@ -1,6 +1,10 @@
 <div class="container">
 
-  <sw-toolbar></sw-toolbar>
+  <sw-toolbar (showPlot)="toggleShowPlot($event)"></sw-toolbar>
+
+  <div *ngIf="showPlot" class="plot-wrapper">
+    <sw-plot [points]="points"></sw-plot>
+  </div>
 
   <div class="terminal-wrapper">
     <sw-terminal [lines]="lines" ></sw-terminal>

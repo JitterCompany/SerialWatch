@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { SerialService, SerialPortDesc } from '../../core/services/serial.service';
 import { Observable } from 'rxjs';
 import { SettingsService } from '../../core/services/settings.service';
 import { first } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { DataService } from '../../core/services/data.service';
 
 @Component({
   selector: 'sw-toolbar',
@@ -31,6 +32,9 @@ export class ToolbarComponent implements OnInit {
   ];
   baudrate = 115200;
 
+  _showPlot = false;
+  @Output() showPlot = new EventEmitter<boolean>();
+
   search(event) {
     console.log('search event', event);
     this.baudrateOptions = [...this.baudrateOptions]
@@ -38,6 +42,7 @@ export class ToolbarComponent implements OnInit {
 
   constructor(
     private serialService: SerialService,
+    private dataService: DataService,
     private settings: SettingsService,
     private router: Router
   ) { }
@@ -82,7 +87,7 @@ export class ToolbarComponent implements OnInit {
   }
 
   clear() {
-    this.serialService.clearBuffer();
+    this.dataService.clearBuffer();
   }
 
   refresh() {
@@ -93,4 +98,8 @@ export class ToolbarComponent implements OnInit {
     this.router.navigate(['settings']);
   }
 
+  togglePlot() {
+    this._showPlot = !this._showPlot;
+    this.showPlot.emit(this._showPlot);
+  }
 }

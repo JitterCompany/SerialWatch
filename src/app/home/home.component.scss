@@ -32,3 +32,11 @@
   min-height: 20%;
   max-height: calc(100vh - #{$footer-height} - #{$header-height});
 }
+
+
+.plot-wrapper {
+  flex: 3 0 auto;
+  // Somehow a height or min-height is needed to prevent terminal from expanding this wrapper
+  min-height: 20%;
+  max-height: calc(100vh - #{$footer-height} - #{$header-height});
+}
