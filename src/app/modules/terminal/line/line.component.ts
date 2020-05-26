@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
-import { SettingsService } from '../../core/services/settings.service';
+import { SettingsService } from '../../../core/services/settings.service';
 
 @Component({
   selector: 'sw-line',

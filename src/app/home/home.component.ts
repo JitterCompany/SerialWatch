@@ -1,7 +1,4 @@
-import { Component, OnInit, NgZone } from '@angular/core';
-import { Subject } from 'rxjs';
-import { Point } from '@arction/lcjs';
-import { DispatchService } from '../core/services/dispatch.service';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'sw-home',
@@ -10,31 +7,11 @@ import { DispatchService } from '../core/services/dispatch.service';
 })
 export class HomeComponent implements OnInit {
 
-  maxLines = 10000;
-  lines: string[] = [];
   showPlot = false;
 
-  points: Point[] = [
-    { x: 0, y: 0 },
-    { x: 1, y: 7 },
-    { x: 2, y: 3 },
-    { x: 3, y: 10 }
-  ];
-
-  constructor(
-    private dispatchService: DispatchService,
-    private zone: NgZone
-  ) { }
-
-  private terminalStream$ = new Subject<string>();
+  constructor() { }
 
   ngOnInit(): void {
-
-    this.dispatchService.subscribePlugin('terminal', this.terminalStream$);
-
-    this.terminalStream$.subscribe(lines => {
-      this.lines = this.lines.concat(lines);
-    });
 
   }
 

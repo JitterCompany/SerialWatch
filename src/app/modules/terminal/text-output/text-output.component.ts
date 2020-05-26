@@ -2,11 +2,11 @@ import { Component, OnInit, Input, ChangeDetectionStrategy, AfterViewInit, ViewC
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
-  selector: 'sw-terminal',
-  templateUrl: './terminal.component.html',
-  styleUrls: ['./terminal.component.scss']
+  selector: 'sw-text-output',
+  templateUrl: './text-output.component.html',
+  styleUrls: ['./text-output.component.scss']
 })
-export class TerminalComponent implements OnInit, AfterViewInit {
+export class TextOutputComponent implements OnInit, AfterViewInit {
   @ViewChild('scrollframe', {static: false}) scrollFrame: ElementRef;
   @ViewChildren('line') itemElements: QueryList<any>;
 

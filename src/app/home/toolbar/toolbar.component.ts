@@ -86,10 +86,6 @@ export class ToolbarComponent implements OnInit {
     this.settings.saveNewlineChar(this.delimiter)
   }
 
-  clear() {
-    // this.dispatchService.clearBuffer();
-  }
-
   refresh() {
     this.serialService.refreshList();
   }

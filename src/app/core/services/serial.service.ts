@@ -99,7 +99,7 @@ export class SerialService {
 
   private connectedDevice: SerialPortDesc;
 
-  public textstream$ = new BehaviorSubject<string>('');
+  public textstream$ = new BehaviorSubject<string>('...');
   private subscription: Subscription;
 
   constructor(

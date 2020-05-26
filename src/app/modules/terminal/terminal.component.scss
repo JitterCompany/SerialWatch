@@ -1,0 +1,16 @@
+@import 'variables';
+
+:host {
+  display: block;
+  height: 100%;
+
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+.terminal-wrapper {
+  flex: 1 1 auto;
+  // Somehow a height or min-height is needed to prevent terminal from expanding this wrapper
+  min-height: 20%;
+  max-height: calc(100vh - #{$footer-height} - #{$header-height});
+}

@@ -83,7 +83,7 @@ export class SettingsService {
   }
 
   getPrefixColor(line: string) {
-    if (!line) {
+    if (!line || !this.preferences) {
       return ''
     }
 
