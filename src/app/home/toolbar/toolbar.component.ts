@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { SettingsService } from '../../core/services/settings.service';
 import { first } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { DataService } from '../../core/services/data.service';
+import { DispatchService } from '../../core/services/dispatch.service';
 
 @Component({
   selector: 'sw-toolbar',
@@ -42,7 +42,7 @@ export class ToolbarComponent implements OnInit {
 
   constructor(
     private serialService: SerialService,
-    private dataService: DataService,
+    private dispatchService: DispatchService,
     private settings: SettingsService,
     private router: Router
   ) { }
@@ -87,7 +87,7 @@ export class ToolbarComponent implements OnInit {
   }
 
   clear() {
-    this.dataService.clearBuffer();
+    // this.dispatchService.clearBuffer();
   }
 
   refresh() {

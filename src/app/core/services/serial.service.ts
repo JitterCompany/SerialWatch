@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
-import { from, BehaviorSubject, timer, Subject, Observable, Subscription } from 'rxjs';
-import { map, bufferTime } from 'rxjs/operators';
+import { from, BehaviorSubject, timer, Subject, Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import {streamToRx} from 'rxjs-stream';
 
@@ -98,6 +98,8 @@ export class SerialService {
   private availablePorts$ = new BehaviorSubject<SerialPortDesc[]>([]);
 
   private connectedDevice: SerialPortDesc;
+
+  public textstream$ = new BehaviorSubject<string>('');
   private subscription: Subscription;
 
   constructor(
@@ -167,11 +169,6 @@ export class SerialService {
     })
   }
 
-  getLines() {
-    return [];//this.stream$;
-    // return this.databuffer;
-  }
-
   refreshList() {
     this.availablePorts$.next([]);
     if (this.connectedDevice && !this.connectedDevice.available) {
@@ -196,35 +193,22 @@ export class SerialService {
       open: () => {
         console.log('[open] event for ', device.path);
         this.parser = this.connectedDevice.port.pipe(new this.readline({ delimiter: this.settings.getDelimiter()}));
-        // this.stream$ = streamToRx(this.connectedDevice.port)
+
         if (this.subscription) {
           this.subscription.unsubscribe();
           this.subscription = null;
         }
         this.subscription = streamToRx<string>(this.parser).subscribe({
-          next: (val) => this.parseAndDispatch(val),
-          error: (err) => console.error("error in text stream: ", err)
+          next: (val) => this.textstream$.next(val),
+          error: (err) => this.textstream$.error(err),
+          complete: () => this.textstream$.complete()
         })
 
-
-        // this.stream$.subscribe(x => console.log('stream:', x));
         this.connected$.next();
       },
       close: () => {
         console.log('[close] event for ', device.path);
       }
-    });
-  }
-
-  plugins = new Map<string, Subject<string>>();
-
-  subscribePlugin(name: string, stream: Subject<string>) {
-    this.plugins.set(name, stream);
-  }
-
-  parseAndDispatch(line: string) {
-    this.plugins.forEach((stream, name) => {
-      stream.next(line);
     });
   }
 

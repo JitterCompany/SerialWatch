@@ -1,8 +1,7 @@
 import { Component, OnInit, NgZone } from '@angular/core';
-import { SerialService } from '../core/services/serial.service';
-import { timer, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { Point } from '@arction/lcjs';
-import { bufferTime } from 'rxjs/operators';
+import { DispatchService } from '../core/services/dispatch.service';
 
 @Component({
   selector: 'sw-home',
@@ -23,7 +22,7 @@ export class HomeComponent implements OnInit {
   ];
 
   constructor(
-    private serialService: SerialService,
+    private dispatchService: DispatchService,
     private zone: NgZone
   ) { }
 
@@ -31,18 +30,12 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.serialService.subscribePlugin('terminal', this.terminalStream$);
+    this.dispatchService.subscribePlugin('terminal', this.terminalStream$);
 
-    this.terminalStream$.pipe(bufferTime(100)).subscribe(lines => {
+    this.terminalStream$.subscribe(lines => {
       this.lines = this.lines.concat(lines);
     });
 
-
-    // timer(100, 100).subscribe(() => {
-    //   this.zone.run(() => {
-    //     this.lines = this.serialService.getLines()
-    //   });
-    // });
   }
 
   toggleShowPlot(show: boolean) {

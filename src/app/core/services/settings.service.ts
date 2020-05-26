@@ -83,6 +83,10 @@ export class SettingsService {
   }
 
   getPrefixColor(line: string) {
+    if (!line) {
+      return ''
+    }
+
     const prefixes = this.preferences.prefixColors;
     for (let i=0; i < prefixes.length; i++) {
       if (line.startsWith(prefixes[i].prefix)) {
