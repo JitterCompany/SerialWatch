@@ -4,6 +4,7 @@ import { Subject } from 'rxjs';
 export interface Plugin {
   name: string,
   stream$: Subject<string>,
+  defaultTemplate: string,
 }
 
 @Injectable({

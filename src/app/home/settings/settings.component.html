@@ -5,7 +5,63 @@
 
 <div class="contents">
 
-<h2> Labels </h2>
+  <p-table *ngIf="preferences" [columns]="cols" [value]="preferences.rules" [autoLayout]="true">
+    <ng-template pTemplate="caption">
+      <div style="text-align: left">
+        <p-button (click)="addRule()" label="Add" styleClass="ui-button-info" icon="pi pi-plus"></p-button>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th style="width:2.5em"></th>
+        <th *ngFor="let col of columns" class="ui-p-{{col.priority}}" [pSortableColumn]="col.sort" [pSortableColumnDisabled]="!col.sort">
+          {{col.header}}
+          <p-sortIcon *ngIf="col.sort"></p-sortIcon>
+        </th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-rowData let-columns="columns"  let-index="rowIndex">
+      <tr [pReorderableRow]="index">
+        <td>
+          <i class="pi pi-bars" style="display: flex;justify-content: center;" pReorderableRowHandle></i>
+        </td>
+        <td style="text-align: center; width: 2.25em">
+          <p-checkbox [binary]="true"  name="groupname" [(ngModel)]="rowData.enabled" (ngModelChange)="saveRules()"></p-checkbox>
+        </td>
+        <td pEditableColumn>
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+                <input pInputText type="text" [(ngModel)]="rowData.template" (ngModelChange)="saveRules()">
+            </ng-template>
+            <ng-template pTemplate="output">
+                {{rowData.template}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td style="text-align: center; width: 2.25em">
+          <p-colorPicker [(ngModel)]="rowData.color" (ngModelChange)="saveRules()" appendTo="body"></p-colorPicker>
+        </td>
+        <td class="destinations" style="text-align: center">
+          <p-checkbox *ngFor="let p of plugins" [binary]="true"  name="groupname" [label]="p.name" [(ngModel)]="rowData.destinations[p.name]" (ngModelChange)="saveRules()"></p-checkbox>
+        </td>
+        <td style="text-align: center; width: 2.25em">
+          <p-button (click)="removeRule(i)" styleClass="ui-button-secondary" icon="pi pi-minus-circle"></p-button>
+        </td>
+      </tr>
+
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="6" class="empty-message">
+          No rules available {{cols.length}}
+        </td>
+      </tr>
+    </ng-template>
+
+  </p-table>
+
+<!-- <h2> Labels </h2>
 <p-toolbar>
   <div class="ui-toolbar-group-left">
     <p-button (click)="addPrefix()" label="Add" styleClass="ui-button-info" icon="pi pi-plus"></p-button>
@@ -24,7 +80,7 @@
   <span class="ui-inputgroup-addon">
     <p-button (click)="removePrefix(i)" styleClass="ui-button-secondary" icon="pi pi-minus-circle"></p-button>
   </span>
-</div>
+</div> -->
 
 <h2> Blacklist </h2>
 List of serial devices that should not show up in the dropdown

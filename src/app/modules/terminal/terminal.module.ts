@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, Self } from '@angular/core';
 
 import { TextOutputComponent } from './text-output/text-output.component';
 import { CommandBarComponent } from './command-bar/command-bar.component';
@@ -33,6 +33,7 @@ export class TerminalModule implements Plugin {
 
   name = "terminal";
   stream$ = this.terminalService.stream$;
+  defaultTemplate = '*';
 
   constructor(
     private pluginService: PluginService,

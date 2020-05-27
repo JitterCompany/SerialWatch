@@ -1,31 +1,39 @@
-import { Injectable } from '@angular/core';
+import { Injectable, ɵɵupdateSyntheticHostBinding } from '@angular/core';
 
 import * as Storage from 'electron-json-storage';
 import { Subject, from, BehaviorSubject } from 'rxjs';
 import { filter } from 'rxjs/operators';
+import { PluginService, Plugin } from './plugin.service';
 
 const PREFERENCES_KEY = 'sw_preferences';
+
+export interface MatchRule {
+  enabled: boolean,
+  template: string,
+  color: string,
+  destinations: {}
+}
 
 export interface PrefixColor {
   prefix: string;
   color: string;
 }
 
-interface Preferences {
+export interface Preferences {
+  version: number;
   baudrate?: number;
   prevPort?: string;
   newlineChar?: string;
-  prefixColors?: PrefixColor[];
+  rules?: MatchRule[];
 }
 
 const defaults: Preferences = {
+  version: 1,
   baudrate: 115200,
   prevPort: undefined,
   newlineChar: '\n',
-  prefixColors: [
-    {prefix: 'info', color: '#0000FF'},
-    {prefix: 'warning', color: '#FFFF00'},
-    {prefix: 'error', color: '#FF0000'},
+  rules: [
+
   ]
 }
 
@@ -42,27 +50,49 @@ export class SettingsService {
   baudRateChanged = new BehaviorSubject<number>(defaults.baudrate);
   delimiterChanged = new BehaviorSubject<string>(defaults.newlineChar);
 
+  rules: MatchRule[] = [];
+
   isElectron = () => {
     return window && window.process && window.process.type;
   }
 
-  constructor() {
+  constructor(
+    private pluginService: PluginService
+  ) {
+
     console.log('Init settings service');
     if (this.isElectron()) {
 
       this.storage = window.require('electron-json-storage');
-
-      this.storage.get(PREFERENCES_KEY, (error, data) => {
+      console.log('json storage:', this.storage.getDataPath());
+      this.storage.has(PREFERENCES_KEY, (error: any, hasKey: boolean) => {
         if (error) throw error;
 
-        console.log('loaded settings: ', data);
-        this.preferences = <Preferences>data;
-        // this.prefixLookUptable = new Map(this.preferences.prefixColors.map((p) => [p.prefix, p.color]));
-        this.preferencesLoaded$.next(true);
+        if (hasKey) {
+          this.storage.get(PREFERENCES_KEY, (error, data) => {
+            if (error) throw error;
 
+            console.log('loaded settings: ', data);
+            this.preferences = <Preferences>data;
+            if ((this.preferences.version || 0) < defaults.version) {
+              // TODO migrate or replace
+              console.log('Preferences outdates, using defaults');
+              this.toDefaults();
+            }
+            this.preferencesLoaded$.next(true);
+          });
 
+        } else {
+          console.log('Cannot find settings, use defaults instead');
+          this.toDefaults();
+          this.preferencesLoaded$.next(true);
+        }
       });
     }
+  }
+
+  getPreferences() {
+    return this.preferences;
   }
 
   toDefaults() {
@@ -78,33 +108,31 @@ export class SettingsService {
 
   isReady = () => from(this.preferencesLoaded$).pipe(filter(x => !!x));
 
-  getPrefixColors() {
-    return this.preferences.prefixColors;
-  }
-
   getPrefixColor(line: string) {
     if (!line || !this.preferences) {
       return ''
     }
 
-    const prefixes = this.preferences.prefixColors;
-    for (let i=0; i < prefixes.length; i++) {
-      if (line.startsWith(prefixes[i].prefix)) {
-        return prefixes[i].color;
+    const rule = this.preferences.rules;
+    for (let i=0; i < rule.length; i++) {
+      if (line.startsWith(rule[i].template)) {
+        return rule[i].color;
       }
     }
     return '';
   }
 
+  getRules() {
 
-  savePrefixColors(prefixColors: PrefixColor[]) {
+  }
+
+  saveRules(rules: MatchRule[]) {
     if (!this.preferences) {
       return;
     }
 
-    this.preferences.prefixColors = prefixColors;
+    this.preferences.rules = rules;
     this.save();
-    // this.prefixColorsChanged.next(this.preferences.prefixColors);
 
     return true;
   }

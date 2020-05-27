@@ -13,11 +13,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { DropdownModule } from 'primeng/dropdown';
-import {ToolbarModule} from 'primeng/toolbar';
-import {AutoCompleteModule} from 'primeng/autocomplete';
-import {ColorPickerModule} from 'primeng/colorpicker';
-import {SelectButtonModule} from 'primeng/selectbutton';
-import {TooltipModule} from 'primeng/tooltip';
+import { ToolbarModule } from 'primeng/toolbar';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { ColorPickerModule } from 'primeng/colorpicker';
+import { SelectButtonModule } from 'primeng/selectbutton';
+import { TooltipModule } from 'primeng/tooltip';
+import { CheckboxModule } from 'primeng/checkbox';
+import { TableModule } from 'primeng/table';
 
 @NgModule({
   declarations: [PageNotFoundComponent, WebviewDirective],
@@ -41,6 +43,8 @@ import {TooltipModule} from 'primeng/tooltip';
     ColorPickerModule,
     SelectButtonModule,
     TooltipModule,
+    CheckboxModule,
+    TableModule,
   ]
 })
 export class SharedModule {}
