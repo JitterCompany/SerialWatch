@@ -35,6 +35,7 @@ export class TerminalModule implements Plugin {
   stream$ = this.terminalService.stream$;
   defaultTemplate = '.*';
   order = 100;
+  removePrefix = false;
 
   constructor(
     private pluginService: PluginService,

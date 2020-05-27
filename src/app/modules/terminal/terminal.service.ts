@@ -7,6 +7,11 @@ import { Subject } from 'rxjs';
 export class TerminalService {
 
   stream$ = new Subject<string>();
+  clear$ = new Subject<null>();
 
   constructor() { }
+
+  clearTerminal() {
+    this.clear$.next();
+  }
 }

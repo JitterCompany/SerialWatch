@@ -6,6 +6,7 @@ export interface Plugin {
   stream$: Subject<string>,
   defaultTemplate: string,
   order: number
+  removePrefix: boolean;
 }
 
 @Injectable({

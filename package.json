@@ -75,6 +75,7 @@
     "conventional-changelog-cli": "2.0.32",
     "core-js": "3.6.5",
     "cross-env": "7.0.2",
+    "csv-string": "4.0.1",
     "electron": "8.2.1",
     "electron-builder": "22.4.1",
     "electron-rebuild": "1.10.1",

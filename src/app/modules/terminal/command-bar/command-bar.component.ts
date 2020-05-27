@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { SerialService } from '../../../core/services/serial.service';
 import { ShortcutInput, ShortcutEventOutput, KeyboardShortcutsComponent, AllowIn } from "ng-keyboard-shortcuts";
 import { DispatchService } from '../../../core/services/dispatch.service';
+import { TerminalService } from '../terminal.service';
 
 @Component({
   selector: 'sw-command-bar',
@@ -47,7 +48,7 @@ export class CommandBarComponent implements OnInit, AfterViewInit {
   constructor(
     private fb: FormBuilder,
     private serialService: SerialService,
-    private dispatchService: DispatchService
+    private terminalSerivce: TerminalService
   ) { }
 
   ngOnInit() {
@@ -61,6 +62,6 @@ export class CommandBarComponent implements OnInit, AfterViewInit {
   }
 
   clear() {
-    //todo  , // this.dispatchService.clearBuffer(),
+    this.terminalSerivce.clearTerminal();
   }
 }

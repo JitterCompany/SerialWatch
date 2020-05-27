@@ -15,9 +15,16 @@ export class TerminalComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.terminalService.stream$.subscribe(lines => {
-      this.lines = this.lines.concat(lines);
+    this.terminalService.stream$.subscribe(line => {
+      this.lines = this.lines.concat(line);
     });
+
+
+    this.terminalService.clear$.subscribe(() => this.clear())
+  }
+
+  clear() {
+    this.lines = [];
   }
 
 }

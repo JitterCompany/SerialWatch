@@ -3,7 +3,7 @@
   <sw-toolbar (showPlot)="toggleShowPlot($event)"></sw-toolbar>
 
   <div *ngIf="showPlot" class="plot-wrapper">
-    <sw-plot [points]="points"></sw-plot>
+    <sw-plot></sw-plot>
   </div>
 
   <div class="terminal-wrapper">

@@ -45,8 +45,13 @@ export class DispatchService {
             if (rule.destinations[dest] === true) {
               let i = names.findIndex(n => n === dest);
               if (i >= 0) {
-                console.log('send to dest', dest, rule.destinations[dest], 'for pattern ', rule.template);
+                // console.log('send to dest', dest, rule.destinations[dest], 'for pattern ', rule.template);
+                if (this.plugins[i].removePrefix) {
+                  line = line.slice(rule.template.length);
+                }
+
                 this.plugins[i].stream$.next(line);
+
               }
             }
           }
