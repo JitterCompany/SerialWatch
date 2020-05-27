@@ -15,25 +15,8 @@ export class SettingsComponent implements OnInit {
   prefixColors: PrefixColor[] = [];
   plugins: Plugin[] = [];
 
-  rules: MatchRule[] = [
-    {
-      enabled: true,
-      template: '*',
-      color: '#249638',
-      destinations: {
-        'terminal': true,
-      },
-    },
-    {
-      enabled: true,
-      template: 'plot',
-      color: '#240638',
-      destinations: {
-        'terminal': false,
-        'plot': true
-      },
-    }
-  ];
+  rules: MatchRule[] = [];
+  fixedRules: MatchRule[] = [];
 
   cols = [
     { header: 'Enable', field: 'enabled', sort: '', priority: 1 },
@@ -61,6 +44,7 @@ export class SettingsComponent implements OnInit {
       this.zone.run(() => {
         this.preferences = this.settingsService.getPreferences();
         this.rules = this.preferences.rules;
+        this.fixedRules = this.settingsService.fixedRules;
 
       });
     });

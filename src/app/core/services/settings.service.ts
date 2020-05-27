@@ -33,7 +33,30 @@ const defaults: Preferences = {
   prevPort: undefined,
   newlineChar: '\n',
   rules: [
-
+    {
+      enabled: true,
+      template: 'info',
+      color: '#296E99',
+      destinations: {
+        terminal: true
+      }
+    },
+    {
+      enabled: true,
+      template: 'warning',
+      color: '#B89025',
+      destinations: {
+        terminal: true
+      }
+    },
+    {
+      enabled: true,
+      template: 'err',
+      color: '#C21B15',
+      destinations: {
+        terminal: true
+      }
+    }
   ]
 }
 
@@ -51,6 +74,7 @@ export class SettingsService {
   delimiterChanged = new BehaviorSubject<string>(defaults.newlineChar);
 
   rules: MatchRule[] = [];
+  public fixedRules: MatchRule[] = [];
 
   isElectron = () => {
     return window && window.process && window.process.type;
@@ -89,6 +113,19 @@ export class SettingsService {
         }
       });
     }
+
+    this.fixedRules = this.pluginService.plugins.sort((a,b) => a.order - b.order).map(p => {
+      let rule:MatchRule = {
+        enabled: true,
+        template: p.defaultTemplate,
+        color: '#FFFFFF',
+        destinations: {
+        }
+      };
+      rule.destinations[p.name] = true;
+
+      return rule;
+    });
   }
 
   getPreferences() {
@@ -115,7 +152,8 @@ export class SettingsService {
 
     const rule = this.preferences.rules;
     for (let i=0; i < rule.length; i++) {
-      if (line.startsWith(rule[i].template)) {
+      if (line.match(rule[i].template)) {
+      // if (line.startsWith(rule[i].template)) {
         return rule[i].color;
       }
     }
@@ -123,7 +161,11 @@ export class SettingsService {
   }
 
   getRules() {
+    if (!this.preferences) {
+      return;
+    }
 
+    return this.preferences.rules.concat(this.fixedRules);
   }
 
   saveRules(rules: MatchRule[]) {

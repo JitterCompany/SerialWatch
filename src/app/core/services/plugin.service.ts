@@ -5,6 +5,7 @@ export interface Plugin {
   name: string,
   stream$: Subject<string>,
   defaultTemplate: string,
+  order: number
 }
 
 @Injectable({
@@ -21,6 +22,7 @@ export class PluginService {
   registerPlugin(plugin: Plugin) {
     console.log('register plugin: ', plugin.name);
     this._plugins.set(plugin.name, plugin);
+    // this.settingsService.addDefaultMatchSettings(plugin.matchSettings);
   }
 
   get plugins() {
