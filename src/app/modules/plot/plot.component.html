@@ -1,0 +1,28 @@
+
+
+<sw-ligthning-chart *ngIf="plotFramework === 'light'" [points]="points" [maxPoints]="maxPoints"></sw-ligthning-chart>
+<sw-webgl-plot *ngIf="plotFramework === 'webgl'" [series]="series" [maxPoints]="maxPoints"></sw-webgl-plot>
+
+
+<p-toolbar>
+
+  <div class="ui-toolbar-group-left">
+
+    <p-selectButton [options]="plotFrameworks" [(ngModel)]="plotFramework"></p-selectButton>
+
+  </div>
+
+  <div class="ui-inputgroup">
+    <span class="ui-inputgroup-addon">
+      <span><b>Max Points</b></span>
+    </span>
+    <input pInputText type="number" step=100 placeholder="1000" [(ngModel)]="maxPoints" />
+    <p-button (click)="clear()" label="clear" pTooltip="Clear plot contents" showDelay="1000" styleClass="ui-button-warning" icon="pi pi-times"></p-button>
+  </div>
+
+  <div class="ui-toolbar-group-right">
+  </div>
+
+
+</p-toolbar>
+

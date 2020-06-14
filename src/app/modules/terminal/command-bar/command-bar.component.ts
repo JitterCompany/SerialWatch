@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild, AfterViewInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { SerialService } from '../../../core/services/serial.service';
 import { ShortcutInput, ShortcutEventOutput, KeyboardShortcutsComponent, AllowIn } from "ng-keyboard-shortcuts";
-import { DispatchService } from '../../../core/services/dispatch.service';
 import { TerminalService } from '../terminal.service';
 
 @Component({
