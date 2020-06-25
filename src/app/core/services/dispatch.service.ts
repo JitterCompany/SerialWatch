@@ -40,7 +40,7 @@ export class DispatchService {
 
     lines.forEach(line => {
       for (let rule of rules) {
-        if (line.match(rule.template)) {
+        if (rule.enabled && line.match(rule.template)) {
           for (let dest in rule.destinations) {
             if (rule.destinations[dest] === true) {
               let i = names.findIndex(n => n === dest);

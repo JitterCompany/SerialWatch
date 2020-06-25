@@ -48,7 +48,7 @@
           <p-checkbox *ngFor="let p of plugins" [binary]="true"  name="groupname" [label]="p.name" [(ngModel)]="rowData.destinations[p.name]" (ngModelChange)="saveRules()"></p-checkbox>
         </td>
         <td style="text-align: center; width: 2.25em">
-          <p-button (click)="removeRule(i)" styleClass="ui-button-secondary" icon="pi pi-minus-circle"></p-button>
+          <p-button (click)="removeRule(index)" styleClass="ui-button-secondary" icon="pi pi-minus-circle"></p-button>
         </td>
       </tr>
 
