@@ -1,6 +1,6 @@
 import { Component, OnInit, ComponentFactoryResolver, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
-import { SettingsService, PrefixColor, MatchRule, Preferences } from '../../core/services/settings.service';
+import { SettingsService, MatchRule, Preferences } from '../../core/services/settings.service';
 import { first } from 'rxjs/operators';
 import { PluginService, Plugin } from '../../core/services/plugin.service';
 
@@ -12,7 +12,6 @@ import { PluginService, Plugin } from '../../core/services/plugin.service';
 export class SettingsComponent implements OnInit {
 
   color;
-  prefixColors: PrefixColor[] = [];
   plugins: Plugin[] = [];
 
   rules: MatchRule[] = [];
@@ -76,10 +75,6 @@ export class SettingsComponent implements OnInit {
 
   saveRules() {
     this.settingsService.saveRules(this.rules);
-  }
-
-  addPrefix() {
-    this.prefixColors.push({prefix: 'prefix', color: '#FF00FF'})
   }
 
 }

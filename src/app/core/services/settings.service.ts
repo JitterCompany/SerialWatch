@@ -14,11 +14,6 @@ export interface MatchRule {
   destinations: {}
 }
 
-export interface PrefixColor {
-  prefix: string;
-  color: string;
-}
-
 export interface Preferences {
   version: number;
   baudrate?: number;
