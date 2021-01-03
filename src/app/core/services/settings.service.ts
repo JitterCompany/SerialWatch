@@ -1,4 +1,4 @@
-import { Injectable, ɵɵupdateSyntheticHostBinding } from '@angular/core';
+import { Injectable } from '@angular/core';
 
 import * as Storage from 'electron-json-storage';
 import { from, BehaviorSubject } from 'rxjs';
