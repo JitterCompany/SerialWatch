@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 import { SettingsService } from '../../core/services/settings.service';
 import { first } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { DispatchService } from '../../core/services/dispatch.service';
 
 @Component({
   selector: 'sw-toolbar',
@@ -42,7 +41,6 @@ export class ToolbarComponent implements OnInit {
 
   constructor(
     private serialService: SerialService,
-    private dispatchService: DispatchService,
     private settings: SettingsService,
     private router: Router
   ) { }

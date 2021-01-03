@@ -1,8 +1,8 @@
 import { Component, OnInit, ComponentFactoryResolver, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
-import { SettingsService, MatchRule, Preferences } from '../../core/services/settings.service';
+import { SettingsService, Preferences } from '../../core/services/settings.service';
 import { first } from 'rxjs/operators';
-import { PluginService, Plugin } from '../../core/services/plugin.service';
+import { PluginService, Plugin, MatchRule } from '../../core/services/plugin.service';
 
 @Component({
   selector: 'sw-settings',

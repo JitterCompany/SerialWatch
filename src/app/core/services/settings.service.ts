@@ -1,18 +1,11 @@
 import { Injectable, ɵɵupdateSyntheticHostBinding } from '@angular/core';
 
 import * as Storage from 'electron-json-storage';
-import { Subject, from, BehaviorSubject } from 'rxjs';
+import { from, BehaviorSubject } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { PluginService, Plugin } from './plugin.service';
+import { PluginService, MatchRule } from './plugin.service';
 
 const PREFERENCES_KEY = 'sw_preferences';
-
-export interface MatchRule {
-  enabled: boolean,
-  template: string,
-  color: string,
-  destinations: {}
-}
 
 export interface Preferences {
   version: number;
