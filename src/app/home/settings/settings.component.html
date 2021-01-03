@@ -1,5 +1,5 @@
 <nav style="display: flex;">
-  <p-button (click)="back()" label="Back" styleClass="ui-button-info" icon="pi pi-chevron-left"></p-button>
+  <button pButton (click)="back()" label="Back" class="p-button-info" icon="pi pi-chevron-left"></button>
 </nav>
 
 
@@ -9,14 +9,14 @@
   <p-table *ngIf="preferences" [columns]="cols" [value]="preferences.rules" [autoLayout]="true">
     <ng-template pTemplate="caption">
       <div style="text-align: left">
-        <p-button (click)="addRule()" label="Add" styleClass="ui-button-info" icon="pi pi-plus"></p-button>
+        <button pButton (click)="addRule()" label="Add" class="p-button-info" icon="pi pi-plus"></button>
         <span style="margin-left: 20px">Used defined rules</span>
       </div>
     </ng-template>
     <ng-template pTemplate="header" let-columns>
       <tr>
         <th style="width:2.5em"></th>
-        <th *ngFor="let col of columns" class="ui-p-{{col.priority}}" [pSortableColumn]="col.sort" [pSortableColumnDisabled]="!col.sort">
+        <th *ngFor="let col of columns" class="p-p-{{col.priority}}" [pSortableColumn]="col.sort" [pSortableColumnDisabled]="!col.sort">
           {{col.header}}
           <p-sortIcon *ngIf="col.sort"></p-sortIcon>
         </th>
@@ -48,7 +48,7 @@
           <p-checkbox *ngFor="let p of plugins" [binary]="true"  name="groupname" [label]="p.name" [(ngModel)]="rowData.destinations[p.name]" (ngModelChange)="saveRules()"></p-checkbox>
         </td>
         <td style="text-align: center; width: 2.25em">
-          <p-button (click)="removeRule(index)" styleClass="ui-button-secondary" icon="pi pi-minus-circle"></p-button>
+          <button pButton (click)="removeRule(index)" class="p-button-secondary" icon="pi pi-minus-circle"></button>
         </td>
       </tr>
 
@@ -75,7 +75,7 @@
     </ng-template>
     <ng-template pTemplate="header" let-columns>
       <tr>
-        <th *ngFor="let col of columns" class="ui-p-{{col.priority}}" [pSortableColumn]="col.sort" [pSortableColumnDisabled]="!col.sort">
+        <th *ngFor="let col of columns" class="p-p-{{col.priority}}" [pSortableColumn]="col.sort" [pSortableColumnDisabled]="!col.sort">
           {{col.header}}
           <p-sortIcon *ngIf="col.sort"></p-sortIcon>
         </th>

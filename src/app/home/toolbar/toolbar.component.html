@@ -1,11 +1,11 @@
-<header class="ui-g" [ngClass]="{
+<header class="p-g" [ngClass]="{
   'greenbg' : !!selectedDevice && selectedDevice.available && selectedDevice.connected,
   'redbg' :   !!selectedDevice && !selectedDevice.available && selectedDevice.connected}">
 
 
-  <div class="ui-inputgroup">
+  <div class="p-inputgroup">
     <!-- <input type="number" pInputText placeholder="Baudrate"> -->
-    <span class="ui-inputgroup-addon" style="line-height: 1;">Bd</span>
+    <span class="p-inputgroup-addon" style="line-height: 1;">Bd</span>
 
     <p-autoComplete
       placeholder="baudrate"
@@ -18,12 +18,11 @@
       appendTo="body"
       [minLength]="2"
       [size]="10"
-      type="number"
     ></p-autoComplete>
   </div>
 
-  <div class="ui-inputgroup">
-    <span class="ui-inputgroup-addon" style="line-height: 1;">Delim</span>
+  <div class="p-inputgroup">
+    <span class="p-inputgroup-addon" style="line-height: 1;">Delim</span>
     <p-dropdown [options]="delimiterOptions"
     [(ngModel)]="delimiter"
     (ngModelChange)="updateDelimiter($event)"
@@ -34,8 +33,8 @@
     </p-dropdown>
   </div>
 
-  <div class="ui-inputgroup">
-    <span class="ui-inputgroup-addon" style="line-height: 1;">dev</span>
+  <div class="p-inputgroup">
+    <span class="p-inputgroup-addon" style="line-height: 1;">dev</span>
 
     <p-dropdown *ngIf="(serialPorts$ | async); let ports" #sel
     [options]="ports"
@@ -75,19 +74,19 @@
     </ng-template>
   </p-dropdown>
 
-  <p-button (click)="refresh()" label="" pTooltip="Reset device list" showDelay="200" styleClass="ui-button-warning" icon="pi pi-refresh"></p-button>
-  <p-button *ngIf="!selectedDevice || !selectedDevice.connected" [disabled]="!selectedDevice" (click)="connect()" label="connect" icon="pi pi-play"></p-button>
-  <p-button *ngIf="selectedDevice && selectedDevice.connected" (click)="disconnect()" label="disconnect" icon="pi pi-pause"></p-button>
+  <button pButton (click)="refresh()" label="" pTooltip="Reset device list" showDelay="200" class="p-button-warning" icon="pi pi-refresh"></button>
+  <button pButton *ngIf="!selectedDevice || !selectedDevice.connected" [disabled]="!selectedDevice" (click)="connect()" label="connect" icon="pi pi-play"></button>
+  <button pButton *ngIf="selectedDevice && selectedDevice.connected" (click)="disconnect()" label="disconnect" icon="pi pi-pause"></button>
 
 
 </div>
 
-<div class="ui-inputgroup" style="align-self: flex-end;">
-  <p-button (click)="openSettings()" label="settings" styleClass="ui-button-info" icon="pi pi-cog"></p-button>
+<div class="p-inputgroup" style="align-self: flex-end;">
+  <button pButton (click)="openSettings()" label="settings" class="p-button-info" icon="pi pi-cog"></button>
 </div>
 
-<div class="ui-inputgroup" style="align-self: flex-end;">
-  <p-button (click)="togglePlot()" label="plot" styleClass="ui-button-secondary" icon="pi pi-chart-line"></p-button>
+<div class="p-inputgroup" style="align-self: flex-end;">
+  <button pButton (click)="togglePlot()" label="plot" class="p-button-secondary" icon="pi pi-chart-line"></button>
 </div>
 
 </header>
