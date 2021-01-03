@@ -40,8 +40,8 @@
     "rebuild": "electron-rebuild -v $(electron -v)"
   },
   "dependencies": {
-    "serialport": "9.0.1",
-    "electron-json-storage": "4.1.8"
+    "serialport": "9.0.4",
+    "electron-json-storage": "4.3.0"
   },
   "devDependencies": {
     "@angular-builders/custom-webpack": "9.1.0",
