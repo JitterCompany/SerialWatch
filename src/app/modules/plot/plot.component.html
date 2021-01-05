@@ -1,28 +1,25 @@
 
 
-<sw-ligthning-chart *ngIf="plotFramework === 'light'" [points]="points" [maxPoints]="maxPoints"></sw-ligthning-chart>
-<sw-webgl-plot *ngIf="plotFramework === 'webgl'" [series]="series" [maxPoints]="maxPoints"></sw-webgl-plot>
-
+<!-- <sw-ligthning-chart *ngIf="plotFramework === 'light'" [points]="points" [maxPoints]="maxPoints"></sw-ligthning-chart> -->
+<!-- <sw-webgl-plot *ngIf="plotFramework === 'webgl'" [series]="series" [maxPoints]="maxPoints"></sw-webgl-plot> -->
+<!-- <sw-time-chart *ngIf="plotFramework == 'timechart'" [series]="series" [maxPoints]="maxPoints"></sw-time-chart> -->
+<div id="chart" class="dark-theme" style="height: 90%; width: 100%"></div>
 
 <p-toolbar>
 
-  <div class="p-toolbar-group-left">
+  <button *ngIf="rendering" pButton (click)="pause()" label="Pause" pTooltip="Pause drawing" showDelay="1000" class="p-button-secondary" icon="pi pi-pause"></button>
+  <button *ngIf="!rendering" pButton (click)="resume()" label="Resume" pTooltip="Pause drawing" showDelay="1000" class="p-button-success" icon="pi pi-play"></button>
+  <button pButton (click)="clear()" label="clear" pTooltip="Clear plot contents" showDelay="1000" class="p-button-warning" icon="pi pi-times"></button>
 
-    <p-selectButton [options]="plotFrameworks" [(ngModel)]="plotFramework"></p-selectButton>
-
-  </div>
-
-  <div class="p-inputgroup">
+  <!-- <div class="p-inputgroup">
     <span class="p-inputgroup-addon">
       <span><b>Max Points</b></span>
     </span>
-    <input pInputText type="number" step=100 placeholder="1000" [(ngModel)]="maxPoints" />
-    <button pButton (click)="clear()" label="clear" pTooltip="Clear plot contents" showDelay="1000" class="p-button-warning" icon="pi pi-times"></button>
-  </div>
+    <input pInputText type="number" step=100 placeholder="1000" [(ngModel)]="maxPoints" (ngModelChange)="maxPointsChanged($event)"/>
+  </div> -->
 
-  <div class="p-toolbar-group-right">
-  </div>
+  <!-- <div class="p-toolbar-group-right"> -->
 
+  <!-- </div> -->
 
 </p-toolbar>
-

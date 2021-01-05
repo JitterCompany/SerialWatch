@@ -39,6 +39,9 @@
     "lint": "ng lint",
     "rebuild": "electron-rebuild -v $(electron -v)"
   },
+  "build": {
+    "buildDependenciesFromSource": true
+  },
   "dependencies": {
     "electron-json-storage": "4.3.0",
     "serialport": "9.0.4"
@@ -69,9 +72,9 @@
     "@types/electron-json-storage": "4.0.0",
     "@types/jasmine": "~3.6.0",
     "@types/jasminewd2": "2.0.8",
-    "@types/serialport": "8.0.0",
     "@types/mocha": "8.0.4",
     "@types/node": "12.12.6",
+    "@types/serialport": "8.0.0",
     "@typescript-eslint/eslint-plugin": "4.7.0",
     "@typescript-eslint/eslint-plugin-tslint": "4.7.0",
     "@typescript-eslint/parser": "4.7.0",
@@ -83,8 +86,8 @@
     "csv-string": "4.0.1",
     "electron": "11.1.1",
     "electron-builder": "22.9.1",
-    "electron-reload": "1.5.0",
     "electron-rebuild": "2.3.4",
+    "electron-reload": "1.5.0",
     "eslint": "6.8.0",
     "eslint-plugin-import": "2.20.2",
     "eslint-plugin-jsdoc": "30.7.8",
@@ -105,6 +108,7 @@
     "rxjs": "6.6.3",
     "rxjs-stream": "3.2.1",
     "spectron": "10.0.1",
+    "timechart": "0.5.2",
     "ts-node": "9.1.0",
     "tslib": "^2.0.3",
     "typescript": "4.0.5",

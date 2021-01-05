@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Subject, timer } from 'rxjs';
 
 import * as CSV from 'csv-string';
 
@@ -33,6 +33,27 @@ export class PlotService {
       }
       this.hasNew = true;
     })
+
+    if (!this.series[0]) {
+      this.series.push([])
+      this.series.push([])
+    }
+
+    timer(1000, 100).subscribe(() => {
+      for (let i=0; i < 50; i++) {
+        this.series[0].push({
+          x: this.index,
+          y: Math.cos(this.index * 0.002) * 320
+        });
+
+        this.series[1].push({
+          x: this.index,
+          y: Math.sin(this.index * 0.002) * 320
+        });
+        this.index++;
+      }
+      this.hasNew = true;
+    });
   }
 
   getSeries() {
@@ -57,5 +78,12 @@ export class PlotService {
 
   clearPlot() {
     this.clear$.next();
+
+    this.series = [];
+    this.index = 0;
+    if (!this.series[0]) {
+      this.series.push([])
+      this.series.push([])
+    }
   }
 }

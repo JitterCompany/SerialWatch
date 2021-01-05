@@ -1,5 +1,14 @@
 
-// :host {
-//   display: flex;
-//   flex-flow: column nowrap;
-// }
+:host {
+  // display: flex;
+  // flex-flow: column nowrap;
+}
+
+.dark-theme {
+  // height: 90%;
+  // min-height: 80%;
+  // flex: 1 1 100%;
+  color: white;
+  background: rgba(0, 0, 0, 0.762);
+  --background-overlay: black;
+}
