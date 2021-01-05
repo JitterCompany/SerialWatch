@@ -5,14 +5,11 @@ import { PlotComponent } from './plot.component';
 import { PluginService, Plugin } from '../../core/services/plugin.service';
 
 import { PlotService } from './plot.service';
-import { LigthningChartComponent } from './ligthning-chart/ligthning-chart.component';
-import { WebglPlotComponent } from './webgl-plot/webgl-plot.component';
+
 
 @NgModule({
   declarations: [
     PlotComponent,
-    LigthningChartComponent,
-    WebglPlotComponent
   ],
   imports: [
     SharedModule,

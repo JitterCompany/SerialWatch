@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Point } from '@arction/lcjs';
 import { PlotService } from './plot.service';
 import { timer } from 'rxjs';
 
@@ -13,7 +12,6 @@ import { default as TimeChart } from 'timechart';
 
 export class PlotComponent implements OnInit {
 
-  points: Point[];
   index = 0;
 
   maxPoints = 1000;
@@ -21,12 +19,6 @@ export class PlotComponent implements OnInit {
   series = [];
 
   chart: TimeChart;
-
-  plotFrameworks = [
-    {label: "LigthningChartJS", value: "light"},
-    // {label:"Webgl-plot", value: 'webgl'},
-    {label:"Timechart", value: 'timechart'}];
-  plotFramework = "timechart"
 
   constructor(
     private plotService: PlotService
@@ -68,7 +60,7 @@ export class PlotComponent implements OnInit {
     });
 
     this.plotService.stream$.subscribe(line => {
-      this.points = this.plotService.csv(line);
+      // this.points = this.plotService.csv(line);
       // console.log('values', values);
       // this.lines = this.lines.concat(lines);
     });
