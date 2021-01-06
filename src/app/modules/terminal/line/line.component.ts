@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
-import { SettingsService } from '../../../core/services/settings.service';
+import { SerialUnit } from '../../../core/services/plugin.service';
 
 @Component({
   selector: 'sw-line',
@@ -9,16 +9,16 @@ import { SettingsService } from '../../../core/services/settings.service';
 })
 export class LineComponent implements OnInit {
 
-  @Input() line: string;
+  @Input() line: SerialUnit;
 
+  text: string;
   color: string;
 
-  constructor(
-    private settings: SettingsService
-  ) { }
+  constructor() { }
 
   ngOnInit(): void {
-    this.color = this.settings.getPrefixColor(this.line) || 'white';
+    this.color = this.line.rule.color || 'white';
+    this.text = this.line.line;
   }
 
 }

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { SerialUnit } from '../../core/services/plugin.service';
 import { TerminalService } from './terminal.service';
 
 @Component({
@@ -8,15 +9,15 @@ import { TerminalService } from './terminal.service';
 })
 export class TerminalComponent implements OnInit {
 
-  lines: string[] = [];
+  lines: SerialUnit[] = [];
 
   constructor(
     private terminalService: TerminalService
   ) { }
 
   ngOnInit(): void {
-    this.terminalService.stream$.subscribe(line => {
-      this.lines = this.lines.concat(line);
+    this.terminalService.stream$.subscribe(s => {
+      this.lines = this.lines.concat(s);
     });
 
 

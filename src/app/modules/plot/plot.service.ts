@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { Subject, timer } from 'rxjs';
 
 import * as CSV from 'csv-string';
+import { SerialUnit } from '../../core/services/plugin.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PlotService {
 
-  stream$ = new Subject<string>();
+  stream$ = new Subject<SerialUnit>();
 
   index = 0;
   series = [];
@@ -19,8 +20,8 @@ export class PlotService {
 
 
   constructor() {
-    this.stream$.subscribe(line => {
-      let values = CSV.parse(line)[0];
+    this.stream$.subscribe(s => {
+      let values = CSV.parse(s.line)[0];
 
       for (let i=0; i< values.length; i++) {
         if (!this.series[i]) {

@@ -23,10 +23,12 @@ export class HomeComponent implements OnInit {
     let freq = 10;
     let delay_ms = 1000 / freq;
 
-    const match_rules = this.settingsService.getRules()
 
     this.serialService.textstream$.pipe(bufferTime(delay_ms), filter(x => !!x.length)).subscribe({
-      next: (line) => this.pluginService.parseAndDispatch(line, match_rules)
+      next: (line) => {
+        const match_rules = this.settingsService.getRules()
+        this.pluginService.parseAndDispatch(line, match_rules);
+    }
     });
   }
 

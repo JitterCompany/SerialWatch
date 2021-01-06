@@ -3,7 +3,7 @@ import { Subject } from 'rxjs';
 
 export interface Plugin {
   name: string,
-  stream$: Subject<string>,
+  stream$: Subject<SerialUnit>,
   defaultTemplate: string,
   order: number
   removePrefix: boolean;
@@ -14,6 +14,11 @@ export interface MatchRule {
   template: string,
   color: string,
   destinations: {}
+}
+
+export interface SerialUnit {
+  line: string,
+  rule: MatchRule
 }
 
 @Injectable({
@@ -57,8 +62,7 @@ export class PluginService {
                   line = line.slice(rule.template.length);
                 }
 
-                // TODO: maybe also pass along the color or entire MatchRule?
-                this.plugins[i].stream$.next(line);
+                this.plugins[i].stream$.next({line, rule});
 
               }
             }
