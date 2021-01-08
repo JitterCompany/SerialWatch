@@ -33,28 +33,29 @@ export class PlotService {
         });
       }
       this.hasNew = true;
+      this.index++;
     })
 
-    if (!this.series[0]) {
-      this.series.push([])
-      this.series.push([])
-    }
+    // if (!this.series[0]) {
+    //   this.series.push([])
+    //   this.series.push([])
+    // }
 
-    timer(1000, 100).subscribe(() => {
-      for (let i=0; i < 50; i++) {
-        this.series[0].push({
-          x: this.index,
-          y: Math.cos(this.index * 0.002) * 320
-        });
+    // timer(1000, 100).subscribe(() => {
+    //   for (let i=0; i < 50; i++) {
+    //     this.series[0].push({
+    //       x: this.index,
+    //       y: Math.cos(this.index * 0.002) * 320
+    //     });
 
-        this.series[1].push({
-          x: this.index,
-          y: Math.sin(this.index * 0.002) * 320
-        });
-        this.index++;
-      }
-      this.hasNew = true;
-    });
+    //     this.series[1].push({
+    //       x: this.index,
+    //       y: Math.sin(this.index * 0.002) * 320
+    //     });
+    //     this.index++;
+    //   }
+    //   this.hasNew = true;
+    // });
   }
 
   getSeries() {
@@ -73,18 +74,11 @@ export class PlotService {
     this.index += 1;
 
     return parsed;
-
-    // return values.map(v => Number(v));
   }
 
   clearPlot() {
     this.clear$.next();
-
     this.series = [];
     this.index = 0;
-    if (!this.series[0]) {
-      this.series.push([])
-      this.series.push([])
-    }
   }
 }

@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { PlotService } from './plot.service';
-import { timer } from 'rxjs';
+import { Subscription, timer } from 'rxjs';
 
 import { default as TimeChart } from 'timechart';
+import { filter, first } from 'rxjs/operators';
 
 @Component({
   selector: 'sw-plot',
@@ -20,30 +21,48 @@ export class PlotComponent implements OnInit {
 
   chart: TimeChart;
 
+  updateSubscription: Subscription;
+
   constructor(
     private plotService: PlotService
   ) {}
 
   ngOnInit() {
 
+
+
+    this.plotService.stream$.subscribe(line => {
+      // this.points = this.plotService.csv(line);
+      // console.log('values', values);
+      // this.lines = this.lines.concat(lines);
+    });
+
+    timer(40, 40).pipe(filter(() => this.plotService.hasNew), first()).subscribe(() => {
+        console.log("Create chart");
+        this.createChart(this.plotService.getSeries());
+      }
+    );
+  }
+
+
+  createChart(series) {
     const el = document.getElementById('chart');
     // this.data = [];
     // for (let x = 0; x < 100; x++) {
     //     this.data.push({x, y: Math.random()});
     // }
+    let colors = ['green', 'blue', 'red', 'yellow', 'magenta', 'white'];
+    let plotseries = series.map((s, i) => {
+      return {
+        data: s,
+        lineWidth: 2,
+        color: colors[i % colors.length],
+        name: `series ${i}`
+      }
+    });
+
     this.chart = new TimeChart(el, {
-        series: [{
-          data: this.plotService.series[0],
-          lineWidth: 2,
-          color: 'red',
-          name: 'cos'
-        },
-        {
-          data: this.plotService.series[1],
-          lineWidth: 2,
-          color: 'green',
-          name: 'sin'
-        }],
+        series: plotseries,
         xRange: { min: 0, max: 2 * 1000 },
         realTime: true,
         zoom: {
@@ -56,19 +75,11 @@ export class PlotComponent implements OnInit {
                 minDomainExtent: 1,
             }
         },
-
     });
 
-    this.plotService.stream$.subscribe(line => {
-      // this.points = this.plotService.csv(line);
-      // console.log('values', values);
-      // this.lines = this.lines.concat(lines);
-    });
-
-    timer(40, 40).subscribe(() => {
-      if (this.rendering && this.plotService.hasNew) {
-        this.chart.update()
-        // this.series = [...this.plotService.getSeries()];
+    this.updateSubscription =  timer(40, 40).subscribe(() => {
+      if (this.rendering) {
+        this.chart.update();
       }
     })
   }
