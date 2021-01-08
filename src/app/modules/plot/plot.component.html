@@ -1,7 +1,10 @@
+<div class="chart-container">
+  <div id="chart" class="dark-theme" style="height: 100%; width: 100%">
+    Chart here
+  </div>
+</div>
 
-<div id="chart" class="dark-theme" style="height: 90%; width: 100%"></div>
-
-<!-- <p-toolbar> -->
+<p-toolbar>
 
   <button *ngIf="rendering" pButton (click)="pause()" label="Pause" pTooltip="Pause drawing" showDelay="1000" class="p-button-secondary" icon="pi pi-pause"></button>
   <button *ngIf="!rendering" pButton (click)="resume()" label="Resume" pTooltip="Pause drawing" showDelay="1000" class="p-button-success" icon="pi pi-play"></button>
@@ -18,4 +21,4 @@
 
   <!-- </div> -->
 
-<!-- </p-toolbar> -->
+</p-toolbar>

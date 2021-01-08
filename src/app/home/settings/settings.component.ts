@@ -1,5 +1,4 @@
-import { Component, OnInit, ComponentFactoryResolver, NgZone } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { SettingsService, Preferences } from '../../core/services/settings.service';
 import { first } from 'rxjs/operators';
 import { PluginService, Plugin, MatchRule } from '../../core/services/plugin.service';
@@ -28,7 +27,6 @@ export class SettingsComponent implements OnInit {
   preferences: Preferences;
 
   constructor(
-    private router: Router,
     private settingsService: SettingsService,
     private zone: NgZone,
     private pluginService: PluginService
@@ -47,10 +45,6 @@ export class SettingsComponent implements OnInit {
 
       });
     });
-  }
-
-  back() {
-    this.router.navigate(['home']);
   }
 
   toDefaults() {

@@ -20,6 +20,7 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { TooltipModule } from 'primeng/tooltip';
 import { CheckboxModule } from 'primeng/checkbox';
 import { TableModule } from 'primeng/table';
+import { DynamicDialogModule } from 'primeng/dynamicdialog'
 
 @NgModule({
   declarations: [PageNotFoundComponent, WebviewDirective],
@@ -45,6 +46,7 @@ import { TableModule } from 'primeng/table';
     TooltipModule,
     CheckboxModule,
     TableModule,
+    DynamicDialogModule,
   ]
 })
 export class SharedModule {}

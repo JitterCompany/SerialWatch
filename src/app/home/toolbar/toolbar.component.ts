@@ -3,12 +3,14 @@ import { SerialService, SerialPortDesc } from '../../core/services/serial.servic
 import { Observable } from 'rxjs';
 import { SettingsService } from '../../core/services/settings.service';
 import { first } from 'rxjs/operators';
-import { Router } from '@angular/router';
+import { DialogService } from 'primeng/dynamicdialog';
+import { SettingsComponent } from '../settings/settings.component';
 
 @Component({
   selector: 'sw-toolbar',
   templateUrl: './toolbar.component.html',
-  styleUrls: ['./toolbar.component.scss']
+  styleUrls: ['./toolbar.component.scss'],
+  providers: [DialogService]
 })
 export class ToolbarComponent implements OnInit {
 
@@ -42,7 +44,7 @@ export class ToolbarComponent implements OnInit {
   constructor(
     private serialService: SerialService,
     private settings: SettingsService,
-    private router: Router
+    public dialogService: DialogService
   ) { }
 
   ngOnInit(): void {
@@ -89,7 +91,11 @@ export class ToolbarComponent implements OnInit {
   }
 
   openSettings() {
-    this.router.navigate(['settings']);
+    // this.router.navigate(['settings']);
+    const ref = this.dialogService.open(SettingsComponent, {
+      header: 'Settings',
+      width: '70%'
+    });
   }
 
   togglePlot() {

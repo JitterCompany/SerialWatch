@@ -63,7 +63,8 @@ export class PlotComponent implements OnInit {
 
     this.chart = new TimeChart(el, {
         series: plotseries,
-        xRange: { min: 0, max: 2 * 1000 },
+        baseTime: Date.now(),
+        xRange: { min: 0, max: 1000 },
         realTime: true,
         zoom: {
             x: {
@@ -94,9 +95,7 @@ export class PlotComponent implements OnInit {
 
   resume() {
     this.rendering = true;
-    // this.chart.onResize();
     this.chart.options.realTime = true;
-    // this.chart.options.series
   }
 
   maxPointsChanged(maxPoints) {
