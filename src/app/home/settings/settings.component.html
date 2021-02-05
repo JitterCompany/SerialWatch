@@ -83,15 +83,8 @@
         <td style="text-align: center; width: 2.25em">
           <p-checkbox [binary]="true"  name="groupname" [(ngModel)]="rowData.enabled" (ngModelChange)="saveRules()"></p-checkbox>
         </td>
-        <td pEditableColumn>
-          <p-cellEditor>
-            <ng-template pTemplate="input">
-                <input pInputText type="text" [(ngModel)]="rowData.template" (ngModelChange)="saveRules()">
-            </ng-template>
-            <ng-template pTemplate="output">
-                {{rowData.template}}
-            </ng-template>
-          </p-cellEditor>
+        <td>
+          {{rowData.template}}
         </td>
         <td style="text-align: center; width: 2.25em">
           <p-colorPicker [(ngModel)]="rowData.color" (ngModelChange)="saveRules()" appendTo="body"></p-colorPicker>
@@ -112,9 +105,9 @@
 
   </p-table>
   </div>
-
+<!--
 <h2> Blacklist </h2>
 List of serial devices that should not show up in the dropdown
-
+ -->
 
 </div>
