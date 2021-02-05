@@ -3,7 +3,8 @@
   "directories": {
     "output": "release/"
   },
-    "files": [
+  "buildDependenciesFromSource": true,
+  "files": [
         "**/*",
         "!**/*.ts",
         "!*.code-workspace",
@@ -18,7 +19,7 @@
         "!karma.conf.js",
         "!tsconfig.json",
         "!tslint.json"
-    ],
+  ],
   "win": {
     "icon": "dist/assets/icons/icon.png",
     "target": [
