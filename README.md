@@ -5,8 +5,15 @@
 
 # SerialWatch: Introduction
 
-Serial console to assist embedded development.
+Serial console to assist embedded development. Most important features:
 
+* Auto reconnect to serial port. You can plug out and in your device and it will automatically try to reconnect if you were already connected before.
+* Plot plugin. See real time plots and text ouput in the same window.
+* Use matching rules to filter lines and assign colors to certain patterns. For example, match lines that contain 'error' and assign red.
+
+## Default match rules:
+
+`plot` any numerical value after the `plot` prefix will be redirected to the plot plugin and plotted. It will not be shown in the text output by default.
 
 # Development
 
@@ -14,26 +21,16 @@ Serial console to assist embedded development.
 
 Currently runs with:
 
-- Angular v9.1.1
-- Electron v8.2.1
-- Electron Builder v22.4.1
-
-You can :
-
-- Run your app in a local development environment with Electron & Hot reload
-- Run your app in a production environment
-- Package your app into an executable file for Linux, Windows & Mac
-
-/!\ Hot reload only pertains to the renderer process. The main electron process is not able to be hot reloaded, only restarted.
-
-/!\ Angular 9.x CLI needs Node 10.13 or later to works correctly.
+- Angular v11
+- Electron v11
+- Node v12 or higher
 
 ## Getting Started
 
 Clone this repository locally :
 
 ``` bash
-git clone https://github.com/ijager/SerialWatch.git
+git clone https://github.com/devboard-io/SerialWatch.git
 ```
 
 Install dependencies with npm :
@@ -45,50 +42,29 @@ npm ci
 npm install
 ```
 
-There is an issue with `yarn` and `node_modules` when the application is built by the packager. Please use `npm` as dependencies manager.
-
-If you want to generate Angular components with Angular-cli , you **MUST** install `@angular/cli` in npm global context.
-Please follow [Angular-cli documentation](https://github.com/angular/angular-cli) if you had installed a previous version of `angular-cli`.
-
-``` bash
-npm install -g @angular/cli
-```
-
-## To build for development
+## To build and run for development
 
 - **in a terminal window** -> npm start
 
-Voila! You can use your Angular + Electron app in a local development environment with hot reload !
-
-The application code is managed by `main.ts`. In this sample, the app runs with a simple Angular App (http://localhost:4200) and an Electron window.
-The Angular component contains an example of Electron and NodeJS native lib import.
 You can disable "Developer Tools" by commenting `win.webContents.openDevTools();` in `main.ts`.
 
-## Included Commands
+## Dev Commands
 
 |Command|Description|
 |--|--|
-|`npm run ng:serve:web`| Execute the app in the browser |
 |`npm run build`| Build the app. Your built files are in the /dist folder. |
 |`npm run build:prod`| Build the app with Angular aot. Your built files are in the /dist folder. |
 |`npm run electron:local`| Builds your application and start electron
-|`npm run electron:linux`| Builds your application and creates an app consumable on linux system |
-|`npm run electron:windows`| On a Windows OS, builds your application and creates an app consumable in windows 32/64 bit systems |
-|`npm run electron:mac`|  On a MAC OS, builds your application and generates a `.app` file of your application that can be run on Mac |
+|`npm run electron:build`| Builds your application and creates an app consumable based on your operating system |
 
-**Your application is optimised. Only /dist folder and node dependencies are included in the executable.**
+**The application is optimised. Only /dist folder and node dependencies are included in the executable.**
 
-## You want to use a specific lib (like rxjs) in electron main thread ?
+# Acknowledgments
 
-YES! You can do it! Just by importing your library in npm dependencies section (not **devDependencies**) with `npm install --save`. It will be loaded by electron during build phase and added to your final package. Then use your library by importing it in `main.ts` file. Quite simple, isn't it ?
-
-## Browser mode
-
-Maybe you want to execute the application in the browser with hot reload ? Just run `npm run ng:serve:web`.
-**Note that you can't use Electron or NodeJS native libraries in this case.** Please check `providers/electron.service.ts` to watch how conditional import of electron/Native libraries is done.
+This app is based on [Angular-Electron starter](https://github.com/maximegris/angular-electron) by Maxime Gris. This made it very easy to get up and running with Electron and Angular.
 
 [license-badge]: https://img.shields.io/badge/license-Apache2-blue.svg?style=style=flat-square
-[license]: https://github.com/maximegris/angular-electron/blob/master/LICENSE.md
+[license]: https://github.com/devboard-io/serialwatch/blob/master/LICENSE.md
 [prs-badge]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square
 [prs]: http://makeapullrequest.com
 [maintained-badge]: https://img.shields.io/badge/maintained-yes-brightgreen

@@ -2,7 +2,7 @@
   "name": "serialwatch",
   "version": "0.1.0",
   "description": "Serial Console",
-  "homepage": "https://github.com/JitterCompany/serialwatch",
+  "homepage": "https://github.com/devboard-io/serialwatch",
   "author": {
     "name": "Ingmar Jager",
     "email": "ijager@jitter.company"
