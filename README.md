@@ -11,9 +11,21 @@ Serial console to assist embedded development. Most important features:
 * Plot plugin. See real time plots and text ouput in the same window.
 * Use matching rules to filter lines and assign colors to certain patterns. For example, match lines that contain 'error' and assign red.
 
+Serialwatch | settings |
+--|--
+![](img/serialwatch_screenshot.png) | ![](img/serialwatch_screenshot2.png)
+
 ## Default match rules:
 
-`plot` any numerical value after the `plot` prefix will be redirected to the plot plugin and plotted. It will not be shown in the text output by default.
+Match rules work on incomming lines of text. It's aplpied as a regex match. If there is a match, the line will propagate to the selected destinations (modules/plugings). Rules are applied from top to bottom. The first match wins.
+
+There are a few default rules built in to make sure SerialWatch works out of the box:
+
+Rule | Plugin | Description
+--- | --- | ---
+`plot` | Plot | Direct all lines starting with `plot` to the plot module (and not to the terminal)
+`.*` | Terminal | Wildcard: by default everything that has not been matched yet will go to the terminal |
+
 
 # Development
 
@@ -58,6 +70,10 @@ You can disable "Developer Tools" by commenting `win.webContents.openDevTools();
 |`npm run electron:build`| Builds your application and creates an app consumable based on your operating system |
 
 **The application is optimised. Only /dist folder and node dependencies are included in the executable.**
+
+## Build as a standalone app for easy use:
+
+Run `npm run build:prod`. If all goes well this will output a bundled executable for your OS. You can move this executable to e.g. the Applications folder (on MacOS).
 
 # Acknowledgments
 
