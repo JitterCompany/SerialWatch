@@ -1,6 +1,5 @@
 import { Component, OnInit, NgZone, OnDestroy } from '@angular/core';
 import { SettingsService, Preferences } from '../../core/services/settings.service';
-import { first } from 'rxjs/operators';
 import { PluginService, Plugin, MatchRule } from '../../core/services/plugin.service';
 
 @Component({
@@ -38,7 +37,7 @@ export class SettingsComponent implements OnInit {
     console.log('settingscmp init');
     this.plugins = this.pluginService.plugins;
 
-    this.settingsService.isReady().pipe(first()).subscribe((ready) => {
+    this.settingsService.isReady().subscribe((ready) => {
       this.zone.run(() => {
         this.preferences = this.settingsService.getPreferences();
         this.rules = this.preferences.rules;
@@ -85,5 +84,9 @@ export class SettingsComponent implements OnInit {
   exportFilename = "sw_settings.json"
   exportSettings() {
     this.settingsService.export(this.exportFilename);
+  }
+
+  importSettings() {
+    this.settingsService.import();
   }
 }

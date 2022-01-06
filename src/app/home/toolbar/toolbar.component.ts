@@ -54,7 +54,7 @@ export class ToolbarComponent implements OnInit {
 
     this.serialService.connected$.subscribe(() => this.reset());
 
-    this.settings.isReady().pipe(first()).subscribe(() => {
+    this.settings.isReady().subscribe(() => {
       this.baudrate = this.settings.getBaudRate();
       this.delimiter = this.settings.getDelimiter();
     });

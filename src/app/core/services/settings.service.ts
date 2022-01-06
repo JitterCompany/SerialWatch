@@ -99,7 +99,6 @@ export class SettingsService {
             console.log('loaded settings: ', data);
             this.preferences = <Preferences>data;
             if ((this.preferences.version || 0) < defaults.version) {
-              // TODO migrate or replace
               console.log('Preferences outdates, using defaults');
               this.migrate();
               this.save();
@@ -150,7 +149,7 @@ export class SettingsService {
 
   export(suggestedFilename) {
     let filename = this.electronService.remote.dialog.showSaveDialogSync({
-      title: 'Export settings to File…',
+      title: 'Export settings to file…',
       message: 'For example, save the settings in your project repository',
       defaultPath: suggestedFilename,
       filters: [
@@ -163,6 +162,55 @@ export class SettingsService {
       this.fs.writeFileSync(filename, content);
     }
 
+  }
+
+  import() {
+
+    let filename = this.electronService.remote.dialog.showOpenDialogSync({
+      title: 'Import settings file',
+      filters: [
+        { name: 'JSON files', extensions: ['*.json'] }
+      ]
+    });
+
+    if (filename && filename.length) {
+
+      const filecontent: string = this.fs.readFileSync(filename[0], {
+        encoding: 'utf-8'
+      });
+
+      let loaded_preferences = undefined;
+      try {
+        loaded_preferences = JSON.parse(filecontent)
+      }
+      catch {
+        this.electronService.remote.dialog.showErrorBox(
+            `Error while loading file ${filename}`,
+            "Invalid json"
+          );
+      }
+
+      if (loaded_preferences) {
+        this.preferences = <Preferences>loaded_preferences;
+        if ((this.preferences.version || 0) < defaults.version) {
+          this.migrate();
+        }
+        this.save();
+        this.broadcastAllSettings();
+        this.electronService.remote.dialog.showMessageBoxSync({
+          message: "Settings loaded",
+          type: 'info'
+        });
+      }
+    }
+
+  }
+
+  broadcastAllSettings() {
+    this.baudRateChanged.next(this.preferences.baudrate);
+    this.maxLinesChanged.next(this.preferences.maxLines);
+    this.delimiterChanged.next(this.preferences.newlineChar);
+    this.preferencesLoaded$.next(true);
   }
 
   save() {
@@ -181,7 +229,6 @@ export class SettingsService {
     const rule = this.preferences.rules;
     for (let i=0; i < rule.length; i++) {
       if (line.match(rule[i].template)) {
-      // if (line.startsWith(rule[i].template)) {
         return rule[i].color;
       }
     }
