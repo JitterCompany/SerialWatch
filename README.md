@@ -34,8 +34,8 @@ Rule | Plugin | Description
 Currently runs with:
 
 - Angular v11
-- Electron v11
-- Node v12 or higher
+- Electron v12
+- Node v14 or higher
 
 ## Getting Started
 
@@ -73,7 +73,7 @@ You can disable "Developer Tools" by commenting `win.webContents.openDevTools();
 
 ## Build as a standalone app for easy use:
 
-Run `npm run build:prod`. If all goes well this will output a bundled executable for your OS. You can move this executable to e.g. the Applications folder (on MacOS).
+Run `npm run electron:build`. If all goes well this will output a bundled executable for your OS. You can move this executable to e.g. the Applications folder (on MacOS).
 
 # Acknowledgments
 
