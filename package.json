@@ -40,7 +40,7 @@
   },
   "dependencies": {
     "electron-json-storage": "4.3.0",
-    "serialport": "9.0.4"
+    "serialport": "9.2.8"
   },
   "devDependencies": {
     "@angular-builders/custom-webpack": "10.0.1",
