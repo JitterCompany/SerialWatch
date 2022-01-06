@@ -2,6 +2,20 @@
 <div class="contents">
 
   <div class="settings-section">
+
+    <h2> General </h2>
+
+    <div class="p-inputgroup">
+      <span class="p-inputgroup-addon" style="line-height: 1;"> Max lines in terminal:</span>
+      <input pInputText type="number" min=1 step=1 [(ngModel)]="maxLines">
+    </div>
+
+  </div>
+
+  <div class="settings-section">
+
+    <h2> Match rules </h2>
+
   <p-table *ngIf="preferences" [columns]="cols" [value]="preferences.rules" [autoLayout]="true">
     <ng-template pTemplate="caption">
       <div style="text-align: left">

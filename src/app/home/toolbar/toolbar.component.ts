@@ -91,7 +91,6 @@ export class ToolbarComponent implements OnInit {
   }
 
   openSettings() {
-    // this.router.navigate(['settings']);
     const ref = this.dialogService.open(SettingsComponent, {
       header: 'Settings',
       width: '70%'
