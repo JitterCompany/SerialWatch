@@ -1,4 +1,4 @@
-import { Component, OnInit, NgZone } from '@angular/core';
+import { Component, OnInit, NgZone, OnDestroy } from '@angular/core';
 import { SettingsService, Preferences } from '../../core/services/settings.service';
 import { first } from 'rxjs/operators';
 import { PluginService, Plugin, MatchRule } from '../../core/services/plugin.service';
@@ -15,6 +15,8 @@ export class SettingsComponent implements OnInit {
 
   rules: MatchRule[] = [];
   fixedRules: MatchRule[] = [];
+
+  maxLines = 1000;
 
   cols = [
     { header: 'Enable', field: 'enabled', sort: '', priority: 1 },
@@ -37,14 +39,19 @@ export class SettingsComponent implements OnInit {
     this.plugins = this.pluginService.plugins;
 
     this.settingsService.isReady().pipe(first()).subscribe((ready) => {
-      console.log('ready:', ready)
       this.zone.run(() => {
         this.preferences = this.settingsService.getPreferences();
         this.rules = this.preferences.rules;
+        this.maxLines = this.preferences.maxLines || 1000;
         this.fixedRules = this.settingsService.fixedRules;
-
       });
     });
+  }
+
+  ngOnDestroy() {
+    if (this.preferences.maxLines !== this.maxLines) {
+      this.saveLines();
+    }
   }
 
   toDefaults() {
@@ -65,6 +72,10 @@ export class SettingsComponent implements OnInit {
       destinations: {
       },
     });
+  }
+
+  saveLines() {
+    this.settingsService.saveMaxLines(this.maxLines);
   }
 
   saveRules() {

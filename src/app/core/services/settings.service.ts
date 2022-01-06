@@ -13,6 +13,9 @@ export interface Preferences {
   prevPort?: string;
   newlineChar?: string;
   rules?: MatchRule[];
+
+  // Maximum number of lines in terminal
+  maxLines?: number;
 }
 
 const defaults: Preferences = {
@@ -20,6 +23,7 @@ const defaults: Preferences = {
   baudrate: 115200,
   prevPort: undefined,
   newlineChar: '\n',
+  maxLines: 1000,
   rules: [
     {
       enabled: true,
@@ -60,6 +64,7 @@ export class SettingsService {
 
   baudRateChanged = new BehaviorSubject<number>(defaults.baudrate);
   delimiterChanged = new BehaviorSubject<string>(defaults.newlineChar);
+  maxLinesChanged = new BehaviorSubject<number>(defaults.maxLines);
 
   rules: MatchRule[] = [];
   public fixedRules: MatchRule[] = [];
@@ -227,6 +232,17 @@ export class SettingsService {
 
   getPreviousPort() {
     return this.preferences ? this.preferences.prevPort : defaults.prevPort;
+  }
+
+  saveMaxLines(maxLines: number) {
+    this.preferences.maxLines = maxLines;
+    this.save();
+
+    this.maxLinesChanged.next(this.preferences.maxLines);
+  }
+
+  getMaxLines() {
+    return this.preferences.maxLines;
   }
 
 
