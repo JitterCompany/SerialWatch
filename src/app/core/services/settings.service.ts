@@ -5,6 +5,9 @@ import { from, BehaviorSubject } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { PluginService, MatchRule } from './plugin.service';
 
+import * as Fs from 'fs';
+import { ElectronService } from '.';
+
 const PREFERENCES_KEY = 'sw_preferences';
 
 export interface Preferences {
@@ -19,7 +22,7 @@ export interface Preferences {
 }
 
 const defaults: Preferences = {
-  version: 1,
+  version: 2,
   baudrate: 115200,
   prevPort: undefined,
   newlineChar: '\n',
@@ -57,6 +60,7 @@ const defaults: Preferences = {
 })
 export class SettingsService {
   storage: typeof Storage;
+  fs: typeof Fs;
 
   preferences: Preferences;
 
@@ -74,13 +78,16 @@ export class SettingsService {
   }
 
   constructor(
-    private pluginService: PluginService
+    private pluginService: PluginService,
+    private electronService: ElectronService
   ) {
 
     console.log('Init settings service');
     if (this.isElectron()) {
 
       this.storage = window.require('electron-json-storage');
+      this.fs = window.require('fs');
+
       console.log('json storage:', this.storage.getDataPath());
       this.storage.has(PREFERENCES_KEY, (error: any, hasKey: boolean) => {
         if (error) throw error;
@@ -94,7 +101,8 @@ export class SettingsService {
             if ((this.preferences.version || 0) < defaults.version) {
               // TODO migrate or replace
               console.log('Preferences outdates, using defaults');
-              this.toDefaults();
+              this.migrate();
+              this.save();
             }
             this.preferencesLoaded$.next(true);
           });
@@ -125,9 +133,36 @@ export class SettingsService {
     return this.preferences;
   }
 
+  migrate() {
+    if (!this.preferences.maxLines) {
+      this.preferences.maxLines = defaults.maxLines;
+    }
+    if (!this.preferences.rules) {
+      this.preferences.rules = defaults.rules;
+    }
+    this.preferences.version = defaults.version;
+  }
+
   toDefaults() {
     this.preferences = defaults;
     this.save();
+  }
+
+  export(suggestedFilename) {
+    let filename = this.electronService.remote.dialog.showSaveDialogSync({
+      title: 'Export settings to File…',
+      message: 'For example, save the settings in your project repository',
+      defaultPath: suggestedFilename,
+      filters: [
+       { name: 'JSON files', extensions: ['*.json'] }
+      ]
+    });
+    if (filename) {
+      console.log("saving ", filename)
+      const content = JSON.stringify(this.preferences, null, 2);
+      this.fs.writeFileSync(filename, content);
+    }
+
   }
 
   save() {

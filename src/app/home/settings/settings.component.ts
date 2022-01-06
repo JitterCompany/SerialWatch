@@ -82,4 +82,8 @@ export class SettingsComponent implements OnInit {
     this.settingsService.saveRules(this.rules);
   }
 
+  exportFilename = "sw_settings.json"
+  exportSettings() {
+    this.settingsService.export(this.exportFilename);
+  }
 }
