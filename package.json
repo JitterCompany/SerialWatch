@@ -79,7 +79,7 @@
     "core-js": "3.6.5",
     "cross-env": "7.0.2",
     "csv-string": "4.0.1",
-    "electron": "12.2.3",
+    "electron": "13.6.6",
     "electron-builder": "23.0.3",
     "electron-rebuild": "3.2.7",
     "electron-reload": "1.5.0",
