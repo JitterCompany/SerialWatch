@@ -9,6 +9,7 @@
     <button [disabled]="!cmdForm.valid" class="p-button-success" pButton type="submit" label="SEND"></button>
     <button pButton (click)="clear()" label="clear" pTooltip="Clear terminal contents" showDelay="1000" class="p-button-warning" icon="pi pi-times"></button>
   </form>
+  <div class="missed" pTooltip="Number of filtered out lines of text" showDelay="400">missed: {{num_missed$ | async}}</div>
 </p-toolbar>
 
 <ng-keyboard-shortcuts-help [key]="'f1'" [closeKey]="'escape'" [title]="'Help'"></ng-keyboard-shortcuts-help>

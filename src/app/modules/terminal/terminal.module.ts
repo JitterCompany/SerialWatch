@@ -44,4 +44,8 @@ export class TerminalModule implements Plugin {
     console.log( "TerminalModule constructor." );
     this.pluginService.registerPlugin(this);
 	}
+
+  missed() {
+    this.terminalService.missedLine();
+  }
 }

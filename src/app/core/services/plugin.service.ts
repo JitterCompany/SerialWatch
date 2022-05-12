@@ -7,6 +7,10 @@ export interface Plugin {
   defaultTemplate: string,
   order: number
   removePrefix: boolean;
+  /**
+   * Optional callback to be notified of a non-matched line
+   */
+  missed?: Function
 }
 
 export interface MatchRule {
@@ -53,19 +57,19 @@ export class PluginService {
     lines.forEach(line => {
       for (let rule of rules) {
         if (rule.enabled && line.match(rule.template)) {
-          for (let dest in rule.destinations) {
+          for (let dest of names) {
+            let i = names.findIndex(n => n === dest);
             if (rule.destinations[dest] === true) {
-              let i = names.findIndex(n => n === dest);
               if (i >= 0) {
-                // console.log('send to dest', dest, rule.destinations[dest], 'for pattern ', rule.template);
                 if (this.plugins[i].removePrefix) {
                   line = line.slice(rule.template.length);
                 }
-
                 this.plugins[i].stream$.next({line, rule});
-
               }
+            } else if (this.plugins[i].missed) {
+              this.plugins[i].missed()
             }
+
           }
           break;
         }

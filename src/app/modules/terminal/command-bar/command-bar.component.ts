@@ -44,6 +44,9 @@ export class CommandBarComponent implements OnInit, AfterViewInit {
     {label: 'ASCII', value: 'ASCII'},
     {label: 'HEX', value: 'HEX'},
   ];
+
+  num_missed$ = this.terminalSerivce.missed$;
+
   constructor(
     private fb: FormBuilder,
     private serialService: SerialService,
@@ -54,6 +57,7 @@ export class CommandBarComponent implements OnInit, AfterViewInit {
     this.cmdForm = this.fb.group({
       cmd: ['', Validators.required]
     });
+
   }
 
   sendCMD() {
