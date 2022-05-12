@@ -52,6 +52,8 @@ Install dependencies with npm :
 npm ci
 # or:
 npm install
+# or when you get warnings with newer NPM:
+npm install -f
 ```
 
 ## To build and run for development
@@ -74,6 +76,14 @@ You can disable "Developer Tools" by commenting `win.webContents.openDevTools();
 ## Build as a standalone app for easy use:
 
 Run `npm run electron:build`. If all goes well this will output a bundled executable for your OS. You can move this executable to e.g. the Applications folder (on MacOS).
+
+### Building on MacOS without code signing
+
+```bash
+CSC_IDENTITY_AUTO_DISCOVERY=false; npm run electron:build
+```
+
+For code signing an Apple Developer account is required.
 
 # Acknowledgments
 
