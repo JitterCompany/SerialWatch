@@ -102,7 +102,7 @@
     "primeng": "10.0.3",
     "rxjs": "6.6.3",
     "rxjs-stream": "3.2.1",
-    "spectron": "10.0.1",
+    "spectron": "19.0.0",
     "timechart": "0.5.2",
     "ts-node": "9.1.0",
     "tslib": "^2.4.0",
